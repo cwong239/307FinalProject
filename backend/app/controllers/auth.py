@@ -14,7 +14,7 @@ def register_user(data):
     if find_user_by_username(data['username']):
         return jsonify({
             "msg": "Username already exists"
-        }), 400
+        }), 409
 
     hashed_pw = generate_password_hash(data['password'])
     uuid = generate_uuid()
