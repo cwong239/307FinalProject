@@ -1,7 +1,6 @@
-# python3.12 is recommended.
-
-Flask==3.1.0
-Flask-Cors==5.0.1
-numpy==2.2.5
-opencv-python==4.11.0.86
-ultralytics==8.3.119
+flask
+flask-pymongo
+flask-jwt-extended
+python-dotenv
+werkzeug
+mongo
