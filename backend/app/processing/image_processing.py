@@ -15,6 +15,9 @@ def process_image(image, brightness, contrast):
     Raises:
       Exception: If the encoding fails.
     """
+
+    #print("process_image() called.")
+
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
