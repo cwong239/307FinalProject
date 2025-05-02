@@ -12,4 +12,5 @@ def delete(user_id):
 @user_bp.route('', methods=['GET'])
 @jwt_required()
 def test():
+    print(get_jwt_identity())
     return get_jwt_identity()

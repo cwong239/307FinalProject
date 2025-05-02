@@ -1,6 +1,5 @@
 from app.extensions import mongo
 
-
 def find_user_by_username(name):
     return mongo.db.users.find_one({"username": name})
 
