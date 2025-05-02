@@ -5,4 +5,7 @@ image_bp = Blueprint('image_bp', __name__)
 
 @image_bp.route('/image', methods=['POST'])
 def image_route():
+
+    #print("image endpoint called.")
+
     return process_image_controller()

@@ -2,9 +2,12 @@ from flask import request, send_file, jsonify
 import numpy as np
 import io
 import cv2
-from app.processing import process_image
+from app.processing.image_processing import process_image
 
 def process_image_controller():
+
+    #print("process_image_controller() called.")
+
     # Retrieve brightness and contrast from query parameters
     brightness = request.args.get('brightness', default=0, type=float)
     contrast = request.args.get('contrast', default=1.0, type=float)
@@ -24,6 +27,7 @@ def process_image_controller():
     try:
         encoded_image_bytes = process_image(image, brightness, contrast)
     except Exception as e:
+        #print("Failed to process image.")
         return jsonify({'error': str(e)}), 500
 
     # Return the processed image as a downloadable JPEG file
