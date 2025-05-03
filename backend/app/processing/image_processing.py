@@ -52,7 +52,7 @@ def remove_background(image: np.ndarray,
         raise ValueError("Input image is None.")
     
     # Initialize the YOLOv11 segmentation model.
-    model = YOLO(model_weights)
+    model = YOLO(model_weights, verbose=False)
     
     # Run the segmentation model on the image.
     results = model(image)
@@ -60,65 +60,47 @@ def remove_background(image: np.ndarray,
         print("remove_background: No results returned by the YOLO model.")
         raise RuntimeError("No results returned by the YOLO model.")
 
-    print("remove_background: about to process results.")
-
     # Process the first result (assuming one image was processed).
     result = results[0]
     height, width = image.shape[:2]
     final_mask = np.zeros((height, width), dtype=np.uint8)
-    
-    print("remove_background: About to verify segmentation masks.")
     
     # Ensure segmentation masks are available in the result.
     if result.masks is not None and result.masks.data is not None:
         masks_data = result.masks.data
         # Convert the masks to a NumPy array if necessary.
         if hasattr(masks_data, "cpu"):
-            print("remove_background: np cpu")
             masks_data = masks_data.cpu().numpy()
         else:
             masks_data = np.array(masks_data)
 
         # Combine all detected object masks into one final mask.
         for mask in masks_data:
-            print("remove_background: combining mask.")
             binary_mask = (mask > mask_threshold).astype(np.uint8)
-            print("remove_background: binary mask.")
             
             # If the segmentation mask shape doesn't match the image, resize it.
             if binary_mask.shape != (height, width):
                 binary_mask = cv2.resize(binary_mask, (width, height), interpolation=cv2.INTER_NEAREST)
-                print("remove_background: resized mask.")
-            
-            final_mask = np.maximum(final_mask, binary_mask)
             
             try:
                 final_mask = np.maximum(final_mask, binary_mask)
-                print("remove_background: combined final mask.")
             except Exception as e:
                 print("Error encountered when applying np.maximum:")
                 print("final_mask shape:", final_mask.shape, "dtype:", final_mask.dtype)
                 print("binary_mask shape:", binary_mask.shape, "dtype:", binary_mask.dtype)
                 print("Exception:", e)
-            #raise
-            print("remove_background: combined mask.")
+
     else:
         print("remove_background: No segmentation masks detected for this image.")
         raise RuntimeError("No segmentation masks detected for this image.")
 
-    print("remove_background: converting binary mask.")
-
     # Convert the binary mask to the proper 0-255 range for an alpha channel.
     final_mask = (final_mask * 255).astype(np.uint8)
-
-    print("remove_background: adjusted range of final_mask.")
 
     # Create a BGRA image by splitting the input image and adding the alpha channel.
     b, g, r = cv2.split(image)
     alpha = final_mask
     result_image = cv2.merge([b, g, r, alpha])
-    
-    print("remove_background: returning processed image.")
     
     return result_image
     
@@ -138,21 +120,15 @@ def process_image(image, brightness, contrast, gamma, remove_bg):
     Raises:
       Exception: If the encoding fails.
     """
-
-    #print("process_image() called.")
-
+    
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
     #print("process_image: about to call adjust_gamma.")
     
-    #if gamma != 1.0:
     processed_image = adjust_gamma(processed_image, gamma)
     
-    #print("process_image: called adjust_gamma.")
-    
     if remove_bg:
-        print("remove_bg called.")
         processed_image = remove_background(processed_image)
     
     
@@ -163,5 +139,4 @@ def process_image(image, brightness, contrast, gamma, remove_bg):
         print("process_image: failed to encode the processed image.")
         raise Exception("Failed to encode the processed image.")
     
-    print("process_image: returning encoded image.")
     return encoded_image.tobytes()
