@@ -12,6 +12,7 @@ def process_image_controller():
     brightness = request.args.get("brightness", default=0, type=float)
     contrast = request.args.get("contrast", default=1.0, type=float)
     gamma = request.args.get("gamma", default=1.0, type=float)
+    remove_bg = request.args.get("remove_bg", default=0, type=int)
 
     # Check if an image file is provided
     if "image" not in request.files:
@@ -27,7 +28,7 @@ def process_image_controller():
 
     try:
         encoded_image_bytes = process_image(image, brightness, contrast,
-											gamma)
+											gamma, remove_bg)
     except Exception as e:
         #print("Failed to process image.")
         return jsonify({"error": str(e)}), 500
