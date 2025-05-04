@@ -1,5 +1,41 @@
-/*
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, #9013FE, #6A10F3);
+    padding: 1rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .navbar-left ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-left a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar-right .auth-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
 
-Put the formatting css stuff here.
-
-*/
+/* Nav Bar end*/
+  

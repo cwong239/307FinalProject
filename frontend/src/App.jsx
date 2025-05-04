@@ -1,11 +1,8 @@
 import React from "react";
+import Homepage from "./Homepage"
 
 function App() {
-  return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Homepage</h1>
-    </div>
-  );
+    return <Homepage />;
 }
 
 export default App;
