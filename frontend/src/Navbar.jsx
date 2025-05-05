@@ -1,19 +1,20 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./style.css";
 
 function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <h2>FotoMagic</h2>
+      <img src="/logo.png" alt="FotoMagic Logo" className="logo" />
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Edit</a></li>
-          <li><a href="#">Images</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="#">Edit</Link></li>
+          <li><Link to="#">Images</Link></li>
         </ul>
       </div>
       <div className="navbar-right">
-        <a href="#" className="auth-link">Sign Up / Login</a>
+        <Link to="/login" className="auth-link">Sign Up / Login</Link>
       </div>
     </nav>
   );
