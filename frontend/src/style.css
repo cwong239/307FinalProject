@@ -1,41 +1,98 @@
 /* Navbar */
 .navbar {
-    background: linear-gradient(90deg, #9013FE, #6A10F3);
-    padding: 1rem;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-    position: sticky; 
-    top: 0; 
-    z-index: 1000; 
-  }
-  
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-  
-  .navbar-left ul {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar-left a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .navbar-right .auth-link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
+  background: linear-gradient(90deg, #9013FE, #6A10F3);
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-/* Nav Bar end*/
-  
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.navbar-left h2 {
+  font-size: 1.8rem;
+  margin-right: 2rem;
+}
+
+.navbar-left ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-left a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.navbar-right .auth-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Homepage content */
+.homepage-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;       
+  align-items: center;           
+  height: calc(100vh - 80px);    
+  padding: 1rem;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.homepage-content h1 {
+  font-size: 7rem; 
+  font-weight: 900;
+  margin-bottom: 0rem;
+  color: #6A10F3;
+}
+
+.homepage-content p {
+  font-size: 2.5rem; 
+  margin-top: 0; 
+  margin-bottom: 3rem;
+  font-weight: 500;
+  color: #6A10F3;
+}
+
+.feature-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.feature-buttons button {
+  background-color: #6A10F3;
+  border: none;
+  color: white;
+  padding: 0.7rem 1rem;
+  font-size: 2.05rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feature-buttons button:hover {
+  background-color: #9013FE;
+}
