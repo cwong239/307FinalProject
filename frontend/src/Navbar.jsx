@@ -11,6 +11,7 @@ function Navbar() {
           <li><Link to="/">Home</Link></li>
           <li><Link to="#">Edit</Link></li>
           <li><Link to="#">Images</Link></li>
+          <li><Link to="/about">About</Link></li>
         </ul>
       </div>
       <div className="navbar-right">

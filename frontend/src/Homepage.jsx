@@ -18,7 +18,11 @@ function Homepage() {
           <button>Interactive</button>
         </div>
       </div>
+      <footer className="footer">
+  <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+</footer>
     </div>
+    
   );
 }
 

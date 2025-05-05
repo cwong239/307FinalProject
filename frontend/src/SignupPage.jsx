@@ -19,6 +19,10 @@ function SignupPage() {
           Already have an account? <a href="/login">Login</a>
         </p>
       </div>
+      <footer className="footer">
+  <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+</footer>
+
     </div>
   );
 }
