@@ -104,8 +104,52 @@ def remove_background(image: np.ndarray,
     
     return result_image
     
+def adjust_opacity(image, opacity: float = 1.0):
+    """
+    Adjust the opacity of an image.
 
-def process_image(image, brightness, contrast, gamma, remove_bg):
+    Parameters:
+        image (numpy.ndarray): The input image in BGR or BGRA format.
+        opacity (float): A factor between 0.0 and 1.0 where 0.0 means fully transparent
+                              and 1.0 means fully opaque.
+
+    Returns:
+        numpy.ndarray: A new image with adjusted opacity in BGRA format.
+    """
+    
+    print("adjust_opacity: called.")
+    
+    # Clamp the opacity factor to the range [0.0, 1.0]
+    opacity = max(0.0, min(1.0, opacity))
+    
+    # If the image is grayscale, convert it to BGRA.
+    # (This step is optional and depends on your specific use case.)
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)
+
+    # Determine the number of channels in the image
+    num_channels = image.shape[2]
+    print("adjust_opacity: about to get num_channels.")
+    
+    if num_channels == 4:
+        # If the image already has an alpha channel, adjust it by multiplying with the factor.
+        output = image.copy()
+        # Multiply the alpha channel (at index 3) with the opacity factor.
+        output[:, :, 3] = (output[:, :, 3].astype(np.float32) * opacity).astype(np.uint8)
+    elif num_channels == 3:
+        # Convert a BGR image to BGRA.
+        output = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+        # Set the alpha channel to 255 * opacity.
+        alpha_value = np.uint8(255 * opacity)
+        output[:, :, 3] = alpha_value
+    else:
+        raise ValueError(f"Unsupported number of channels: {num_channels}. Expected 3 or 4.")
+
+    return output
+
+
+
+def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
     """
     Process the image by adjusting brightness and contrast.
 
@@ -131,6 +175,13 @@ def process_image(image, brightness, contrast, gamma, remove_bg):
     if remove_bg:
         processed_image = remove_background(processed_image)
     
+    print("process_image: about to adjust opacity.")
+    try:
+	    processed_image = adjust_opacity(processed_image, opacity)
+    except Exception as e:
+        print(f"Exception occurred: {e}", flush=True)
+    
+    print("process_image: adjusted image opacity.")
     
     # Encode the processed image as JPEG
     #success, encoded_image = cv2.imencode(".jpg", processed_image)
