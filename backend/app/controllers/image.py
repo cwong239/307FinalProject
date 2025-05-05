@@ -38,7 +38,7 @@ def process_image_controller():
     except Exception as e:
         return HTTPResponse(500).error(str(e)).send()
 
-    # Return the processed image as a downloadable JPEG file
+    # Return the processed image as a downloadable png file
     return send_file(
         io.BytesIO(encoded_image_bytes),
         mimetype="image/png",

@@ -152,7 +152,7 @@ def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
       contrast (float): Factor to multiply each pixel by (contrast adjustment).
 
     Returns:
-      bytes: The JPEG-encoded processed image.
+      bytes: The PNG-encoded processed image.
 
     Raises:
       Exception: If the encoding fails.
