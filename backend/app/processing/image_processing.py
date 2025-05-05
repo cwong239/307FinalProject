@@ -16,13 +16,9 @@ def adjust_gamma(image, gamma=1.0):
       - gamma > 1 brightens the image.
     """
     
-    #print("adjust_gamma called.")
-    
     # If gamma is 1, return an unchanged copy of the image for efficiency.
     if np.isclose(gamma, 1.0):
         return image.copy()
-
-    #print("adjust_gamma: computing effective exponent.")
 
     # Otherwise, compute the effective exponent for gamma correction.
     effective_exponent = 1.0 / gamma
@@ -117,8 +113,6 @@ def adjust_opacity(image, opacity: float = 1.0):
         numpy.ndarray: A new image with adjusted opacity in BGRA format.
     """
     
-    print("adjust_opacity: called.")
-    
     # Clamp the opacity factor to the range [0.0, 1.0]
     opacity = max(0.0, min(1.0, opacity))
     
@@ -129,7 +123,6 @@ def adjust_opacity(image, opacity: float = 1.0):
 
     # Determine the number of channels in the image
     num_channels = image.shape[2]
-    print("adjust_opacity: about to get num_channels.")
     
     if num_channels == 4:
         # If the image already has an alpha channel, adjust it by multiplying with the factor.
@@ -168,23 +161,17 @@ def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
-    #print("process_image: about to call adjust_gamma.")
-    
     processed_image = adjust_gamma(processed_image, gamma)
     
     if remove_bg:
         processed_image = remove_background(processed_image)
     
-    print("process_image: about to adjust opacity.")
     try:
 	    processed_image = adjust_opacity(processed_image, opacity)
     except Exception as e:
-        print(f"Exception occurred: {e}", flush=True)
+        print(f"Exception occurred: {e}")
     
-    print("process_image: adjusted image opacity.")
-    
-    # Encode the processed image as JPEG
-    #success, encoded_image = cv2.imencode(".jpg", processed_image)
+    # Encode the processed image as png.
     success, encoded_image = cv2.imencode(".png", processed_image)
     if not success:
         print("process_image: failed to encode the processed image.")
