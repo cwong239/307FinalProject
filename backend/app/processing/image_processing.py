@@ -16,13 +16,9 @@ def adjust_gamma(image, gamma=1.0):
       - gamma > 1 brightens the image.
     """
     
-    #print("adjust_gamma called.")
-    
     # If gamma is 1, return an unchanged copy of the image for efficiency.
     if np.isclose(gamma, 1.0):
         return image.copy()
-
-    #print("adjust_gamma: computing effective exponent.")
 
     # Otherwise, compute the effective exponent for gamma correction.
     effective_exponent = 1.0 / gamma
@@ -104,8 +100,49 @@ def remove_background(image: np.ndarray,
     
     return result_image
     
+def adjust_opacity(image, opacity: float = 1.0):
+    """
+    Adjust the opacity of an image.
 
-def process_image(image, brightness, contrast, gamma, remove_bg):
+    Parameters:
+        image (numpy.ndarray): The input image in BGR or BGRA format.
+        opacity (float): A factor between 0.0 and 1.0 where 0.0 means fully transparent
+                              and 1.0 means fully opaque.
+
+    Returns:
+        numpy.ndarray: A new image with adjusted opacity in BGRA format.
+    """
+    
+    # Clamp the opacity factor to the range [0.0, 1.0]
+    opacity = max(0.0, min(1.0, opacity))
+    
+    # If the image is grayscale, convert it to BGRA.
+    # (This step is optional and depends on your specific use case.)
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)
+
+    # Determine the number of channels in the image
+    num_channels = image.shape[2]
+    
+    if num_channels == 4:
+        # If the image already has an alpha channel, adjust it by multiplying with the factor.
+        output = image.copy()
+        # Multiply the alpha channel (at index 3) with the opacity factor.
+        output[:, :, 3] = (output[:, :, 3].astype(np.float32) * opacity).astype(np.uint8)
+    elif num_channels == 3:
+        # Convert a BGR image to BGRA.
+        output = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+        # Set the alpha channel to 255 * opacity.
+        alpha_value = np.uint8(255 * opacity)
+        output[:, :, 3] = alpha_value
+    else:
+        raise ValueError(f"Unsupported number of channels: {num_channels}. Expected 3 or 4.")
+
+    return output
+
+
+
+def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
     """
     Process the image by adjusting brightness and contrast.
 
@@ -115,7 +152,7 @@ def process_image(image, brightness, contrast, gamma, remove_bg):
       contrast (float): Factor to multiply each pixel by (contrast adjustment).
 
     Returns:
-      bytes: The JPEG-encoded processed image.
+      bytes: The PNG-encoded processed image.
 
     Raises:
       Exception: If the encoding fails.
@@ -124,16 +161,17 @@ def process_image(image, brightness, contrast, gamma, remove_bg):
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
-    #print("process_image: about to call adjust_gamma.")
-    
     processed_image = adjust_gamma(processed_image, gamma)
     
     if remove_bg:
         processed_image = remove_background(processed_image)
     
+    try:
+	    processed_image = adjust_opacity(processed_image, opacity)
+    except Exception as e:
+        print(f"Exception occurred: {e}")
     
-    # Encode the processed image as JPEG
-    #success, encoded_image = cv2.imencode(".jpg", processed_image)
+    # Encode the processed image as png.
     success, encoded_image = cv2.imencode(".png", processed_image)
     if not success:
         print("process_image: failed to encode the processed image.")
