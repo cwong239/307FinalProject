@@ -11,3 +11,7 @@ Tools
     - dev is our backend branch and they also use code reviews before pushing into dev.
     - frontend is our frontend branch and we use a rebasing strategy for this.
 - Style tools mentioned earlier
+
+Libraries 
+- Reactjs (frontend)
+- look at requiremnts.txt (backend)
