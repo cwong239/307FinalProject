@@ -14,4 +14,4 @@ Tools
 
 Libraries 
 - Reactjs (frontend)
-- look at requiremnts.txt (backend)
+- look at requirements.txt (backend)
