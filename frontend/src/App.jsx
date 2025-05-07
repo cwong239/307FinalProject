@@ -5,7 +5,6 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import AboutPage from "./AboutPage";
 
-
 function App() {
   return (
     <Routes>

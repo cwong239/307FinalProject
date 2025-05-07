@@ -10,7 +10,11 @@ function LoginPage() {
         <h2>Login</h2>
         <form className="auth-form">
           <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+          />
           <button type="submit">Login</button>
         </form>
         <p className="auth-switch">
@@ -18,9 +22,8 @@ function LoginPage() {
         </p>
       </div>
       <footer className="footer">
-  <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-</footer>
-
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

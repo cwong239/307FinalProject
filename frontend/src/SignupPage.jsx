@@ -10,9 +10,17 @@ function SignupPage() {
         <h2>Sign Up</h2>
         <form className="auth-form">
           <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="Cal Poly Email" required />
+          <input
+            type="email"
+            placeholder="Cal Poly Email"
+            required
+          />
           <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+          />
           <button type="submit">Sign Up</button>
         </form>
         <p className="auth-switch">
@@ -20,9 +28,8 @@ function SignupPage() {
         </p>
       </div>
       <footer className="footer">
-  <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-</footer>
-
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
