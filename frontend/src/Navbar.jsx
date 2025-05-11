@@ -19,7 +19,7 @@ function Navbar() {
             <Link to="#">Edit</Link>
           </li>
           <li>
-            <Link to="#">Images</Link>
+            <Link to="/images">Images</Link>
           </li>
           <li>
             <Link to="/about">About</Link>
