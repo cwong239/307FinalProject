@@ -142,7 +142,8 @@ def adjust_opacity(image, opacity: float = 1.0):
 
 
 
-def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
+def process_image(image, brightness, contrast, grayscale, 
+                    gamma, opacity, remove_bg):
     """
     Process the image by adjusting brightness and contrast.
 
@@ -161,15 +162,24 @@ def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
+    # Apply gamma adjustments.
     processed_image = adjust_gamma(processed_image, gamma)
     
+    # Convert to grayscale if necessary.
+    if grayscale:
+        processed_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2GRAY)
+        processed_image = cv2.cvtColor(processed_image, cv2.COLOR_GRAY2BGR)
+    
+    # Remove background if necessary.
     if remove_bg:
         processed_image = remove_background(processed_image)
     
+    # Adjust opacity.
     try:
 	    processed_image = adjust_opacity(processed_image, opacity)
     except Exception as e:
         print(f"Exception occurred: {e}")
+    
     
     # Encode the processed image as png.
     success, encoded_image = cv2.imencode(".png", processed_image)

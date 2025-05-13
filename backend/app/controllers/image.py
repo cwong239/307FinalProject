@@ -11,6 +11,7 @@ def process_image_controller():
     # Retrieve brightness and contrast from query parameters
     brightness = request.args.get("brightness", default=0, type=float)
     contrast = request.args.get("contrast", default=1.0, type=float)
+    grayscale = request.args.get("grayscale", default=0, type=int)
     gamma = request.args.get("gamma", default=1.0, type=float)
     opacity = request.args.get("opacity", default=1.0, type=float)
     remove_bg = request.args.get("remove_bg", default=0, type=int)
@@ -34,7 +35,8 @@ def process_image_controller():
 
     try:
         encoded_image_bytes = process_image(image, brightness, contrast,
-											gamma, opacity, remove_bg)
+                                grayscale, gamma, opacity, remove_bg)
+        
     except Exception as e:
         return HTTPResponse(500).error(str(e)).send()
 
