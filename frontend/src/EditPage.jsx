@@ -2,23 +2,24 @@ import React, { useState, useRef } from "react";
 import Navbar from "./Navbar";
 import "./style.css";
 import Slider from "./components/Slider";
+import ToggleButton from "./components/ToggleButton";
 
 function EditPage() {
     
     const [imageSrc, setImageSrc] = useState(null);
     const fileInputRef = useRef();
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
         if (file) {
         const imageURL = URL.createObjectURL(file);
         setImageSrc(imageURL);
         }
     };
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
         if (file) {
         const imageURL = URL.createObjectURL(file);
         setImageSrc(imageURL);
@@ -28,36 +29,47 @@ function EditPage() {
 
   return (
     <div>
+
       <Navbar />
 
       <div className="edit-container">
-        <h2>Edit Your Image</h2>
 
-        <div
-          className="upload-area"
-          onClick={() => fileInputRef.current.click()}
-          onDrop={handleDrop}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          {imageSrc ? (
-            <img src={imageSrc} alt="Uploaded" style={getFilterStyle()} />
-          ) : (
-            <div className="upload-placeholder">
+        <div className="edit-subcontainer">
+
+          <div className="edit-slider-menu">
+            <Slider name="Brightness"></Slider>
+            <Slider name="Gamma"></Slider>
+            <Slider name="Contrast"></Slider>
+          </div>
+
+          <div className="edit-upload-box"
+            onClick={() => fileInputRef.current.click()}
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+            >
+            {imageSrc ? (
+              <img src={imageSrc} alt="uploaded"/>
+            ) : (
               <p>Click or drag an image here to upload</p>
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            style={{ display: "none" }}
-          />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+            />
+          </div>
+
         </div>
 
-      </div>
+        <div className="edit-subcontainer-toggle-buttons">
+            <ToggleButton name="Gray Scale"></ToggleButton>
+            <ToggleButton name="Background Removal"></ToggleButton>
+        </div>
+      
 
-      <Slider></Slider>
+      </div>
 
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>

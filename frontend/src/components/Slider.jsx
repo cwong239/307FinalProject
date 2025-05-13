@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import "../style.css";
 
-function Slider() {
+function Slider({ name = "Slider" }) {
+
+  // set default slider value to 50% 
   const [value, setValue] = useState(50);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
+  const handleChange = (event) => {
+    setValue(event.target.value);
   };
 
   return (
-    <div>
+     <div className="slider-container">
+      <p className="slider-name">{name}</p>
       <input 
         type="range" 
         min="0" 
@@ -16,7 +20,6 @@ function Slider() {
         value={value} 
         onChange={handleChange} 
       />
-      <p>Value: {value}</p>
     </div>
   );
 }
