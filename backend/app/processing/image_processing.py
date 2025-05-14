@@ -140,9 +140,45 @@ def adjust_opacity(image, opacity: float = 1.0):
 
     return output
 
+def convert_to_grayscale(image: np.ndarray) -> np.ndarray:
+    """
+    Convert an OpenCV image to grayscale while preserving transparency.
+    The reason why this is necessary is because converting to "regular"
+    grayscale removes transparency.
+    """
+    # If the image is empty or not a proper array, raise an error.
+    if image is None or not hasattr(image, 'shape'):
+        raise ValueError("A valid image must be provided.")
+    
+    # Handle images with an alpha channel (4 channels).
+    if image.ndim == 3 and image.shape[2] == 4:
+        # Split the BGRA channels.
+        b, g, r, alpha = cv2.split(image)
+        # Merge B, G, R to form a BGR image.
+        bgr_image = cv2.merge([b, g, r])
+        # Convert the BGR image to grayscale.
+        gray = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
+        # Merge the grayscale image with the alpha channel.
+        result_image = cv2.merge([gray, gray, gray, alpha])
+        return result_image
+
+    # Handle images with no alpha channel.
+    elif image.ndim == 3 and image.shape[2] == 3:
+        # Convert BGR image to grayscale.
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return gray
+
+    # If the image is already single channel, assume it is grayscale.
+    elif image.ndim == 2:
+        # Already grayscale; no conversion needed.
+        return image
+
+    else:
+        raise ValueError("Unsupported image format: image should be BGR, BGRA, or grayscale.")
 
 
-def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
+def process_image(image, brightness, contrast, grayscale, 
+                    gamma, opacity, remove_bg):
     """
     Process the image by adjusting brightness and contrast.
 
@@ -161,15 +197,23 @@ def process_image(image, brightness, contrast, gamma, opacity, remove_bg):
     # Apply brightness and contrast adjustments
     processed_image = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
     
+    # Apply gamma adjustments.
     processed_image = adjust_gamma(processed_image, gamma)
     
+    # Remove background if necessary.
     if remove_bg:
         processed_image = remove_background(processed_image)
     
+    # Convert to grayscale if necessary.
+    if grayscale:
+        processed_image = convert_to_grayscale(processed_image)
+    
+    # Adjust opacity.
     try:
 	    processed_image = adjust_opacity(processed_image, opacity)
     except Exception as e:
         print(f"Exception occurred: {e}")
+    
     
     # Encode the processed image as png.
     success, encoded_image = cv2.imencode(".png", processed_image)
