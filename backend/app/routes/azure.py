@@ -11,4 +11,12 @@ def azure_route():
     if not container_client:
         return jsonify({"error": "Azure Blob Storage not configured."}), 500
 
-    return azure_controller(container_client)
+    return upload_file_to_storage(container_client)
+    
+@azure_bp.route("/media", methods=["GET"])
+def download_image():
+    container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
+    if not container_client:
+        return jsonify({"error": "Azure Blob Storage not configured."}), 500
+
+    return download_file_from_storage(container_client)

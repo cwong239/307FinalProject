@@ -28,7 +28,7 @@ def create_app():
     print("Mongo object after init:", mongo)
     print("Mongo DB object:", mongo.db)
 
-    ######################################
+    ######################################################
     #Azure initialization.
 
     # Get connection details from environment variables
@@ -59,7 +59,7 @@ def create_app():
     # Register the blueprint from the routes folder
     app.register_blueprint(azure_bp)
 
-    ######################################
+    ######################################################
 
     jwt.init_app(app)
 
