@@ -8,3 +8,4 @@ flask-jwt-extended
 python-dotenv
 werkzeug
 mongo
+azure-storage-blob>=12.25.1
