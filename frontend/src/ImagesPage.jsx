@@ -24,7 +24,6 @@ function ImagesPage() {
   return (
     <div>
       <Navbar />
-
       <div className="gallery-container">
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
@@ -38,7 +37,10 @@ function ImagesPage() {
           ))}
         </div>
       </div>
-
+      <audio controls>
+        <source src="/placeHolderImages/VeryImportantDoNotDelete.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>
       </footer>
