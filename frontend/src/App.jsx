@@ -9,6 +9,10 @@ import PrivateRoute from "./PrivateRoute"; // ✅
 import ImagesPage from "./ImagesPage";
 import EditPage from "./EditPage";
 
+import ImagesPage from "./ImagesPage";
+import EditPage from "./EditPage";
+
+
 function App() {
   return (
     <Routes>
