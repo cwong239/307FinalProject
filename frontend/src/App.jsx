@@ -4,11 +4,8 @@ import Homepage from "./Homepage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import AboutPage from "./AboutPage";
-import Dashboard from "./Dashboard"; // ✅
-import PrivateRoute from "./PrivateRoute"; // ✅
-import ImagesPage from "./ImagesPage";
-import EditPage from "./EditPage";
-
+import Dashboard from "./Dashboard"; 
+import PrivateRoute from "./PrivateRoute";
 import ImagesPage from "./ImagesPage";
 import EditPage from "./EditPage";
 
