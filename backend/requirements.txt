@@ -8,3 +8,4 @@ flask-jwt-extended
 python-dotenv
 werkzeug
 mongo
+flask_cors
