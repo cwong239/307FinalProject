@@ -69,7 +69,34 @@
   margin-top: 0;
   margin-bottom: 3rem;
   font-weight: 500;
-  color: #6a10f3;
+  background: linear-gradient(
+    90deg,
+    #6a10f3 25%,
+    #ffffff 50%,
+    #6a10f3 75%
+  );
+  background-size: 200% 100%; /* double width for smooth movement */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 8s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.homepage-content h1:hover {
+  color: #9013fe;
+  transform: scale(1.01);
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  text-shadow: 0 0 10px #9013fe;
+
 }
 
 .feature-buttons {
@@ -225,7 +252,6 @@
 .download-button:hover {
   background: #005fd1;
 }
-=======
 /* Edit Page related CSS*/
 .edit-container {
   display: flex;
