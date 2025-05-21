@@ -63,7 +63,10 @@ function Navbar() {
           </>
         ) : (
           <Link to="/login" className="auth-link">
-            Sign Up / Login
+            <span className="navbar-item">
+              <span className="material-icons">login</span>
+              Sign Up / Login
+            </span>
           </Link>
         )}
       </div>
