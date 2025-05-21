@@ -11,6 +11,12 @@ import PrivateRoute from "./PrivateRoute";
 import ImagesPage from "./ImagesPage";
 import EditPage from "./EditPage";
 
+<<<<<<< HEAD
+=======
+import ImagesPage from "./ImagesPage";
+import EditPage from "./EditPage";
+
+>>>>>>> 43196c754b1485d031333a5a12f1de463fab9103
 
 function App() {
   const location = useLocation();
