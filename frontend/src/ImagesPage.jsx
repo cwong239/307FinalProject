@@ -43,6 +43,10 @@ function ImagesPage() {
             </div>
           ))}
         </div>
+        <audio controls>
+          <source src="/placeHolderImages/VeryImportantDoNotDelete.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
       </motion.div>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>
