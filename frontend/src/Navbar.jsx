@@ -11,10 +11,42 @@ function Navbar() {
       <div className="navbar-left">
         <img src="/logo.png" alt="FotoMagic Logo" className="logo" />
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/edit">Edit</Link></li>
-          <li><Link to="/images">Images</Link></li>
-          <li><Link to="/about">About</Link></li>
+          <li>
+            <Link to="/">
+              <span className="navbar-item">
+                <span className="material-icons">home</span>
+                Home
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/edit">
+              <span className="navbar-item">
+                <span className="material-icons">edit</span>
+                Edit
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/images">
+              <span className="navbar-item">
+                <span className="material-icons">photo_library</span>
+                Images
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/about">
+              <span className="navbar-item">
+                <span className="material-icons">info</span>
+                About
+              </span>
+            </Link>
+          </li>
+
         </ul>
       </div>
       <div className="navbar-right">
