@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
@@ -22,10 +23,15 @@ const images = [
 
 function ImagesPage() {
   return (
-    <div>
+    <>
       <Navbar />
-
-      <div className="gallery-container">
+      <motion.div
+        className="gallery-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+      >
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
           {images.map((img, index) => (
@@ -37,12 +43,11 @@ function ImagesPage() {
             </div>
           ))}
         </div>
-      </div>
-
+      </motion.div>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>
       </footer>
-    </div>
+    </>
   );
 }
 
