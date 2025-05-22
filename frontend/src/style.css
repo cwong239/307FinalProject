@@ -45,6 +45,18 @@
   font-size: 1.1rem;
 }
 
+.navbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+}
+
+.material-icons {
+  font-size: 24px;
+  line-height: 1;
+}
+
 /* Homepage content */
 .homepage-content {
   display: flex;
@@ -62,6 +74,14 @@
   font-weight: 900;
   margin-bottom: 0rem;
   color: #6a10f3;
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.homepage-content h1:hover {
+  color: #9013fe;
+  transform: scale(1.01);
+  text-shadow: 0 0 10px #9013fe;
 }
 
 .homepage-content p {
@@ -69,13 +89,8 @@
   margin-top: 0;
   margin-bottom: 3rem;
   font-weight: 500;
-  background: linear-gradient(
-    90deg,
-    #6a10f3 25%,
-    #ffffff 50%,
-    #6a10f3 75%
-  );
-  background-size: 200% 100%; /* double width for smooth movement */
+  background: linear-gradient(90deg, #6a10f3 25%, #ffffff 50%, #6a10f3 75%);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 8s linear infinite;
@@ -88,15 +103,6 @@
   100% {
     background-position: -200% 0;
   }
-}
-
-.homepage-content h1:hover {
-  color: #9013fe;
-  transform: scale(1.01);
-  transition: color 0.3s ease, transform 0.3s ease;
-  cursor: pointer;
-  text-shadow: 0 0 10px #9013fe;
-
 }
 
 .feature-buttons {
@@ -124,6 +130,7 @@
   background-color: #9013fe;
 }
 
+/* Auth Forms */
 .auth-container {
   max-width: 400px;
   margin: 5rem auto;
@@ -186,6 +193,7 @@
   object-fit: contain;
 }
 
+/* About Page */
 .about-container {
   max-width: 800px;
   margin: 3rem auto;
@@ -207,7 +215,6 @@
 .about-container ul {
   padding-left: 1.2rem;
 }
-
 
 /* Images Page */
 .gallery-container {
@@ -234,7 +241,7 @@
 
 .gallery-image {
   width: 100%;
-  height: 225px; 
+  height: 225px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -252,7 +259,8 @@
 .download-button:hover {
   background: #005fd1;
 }
-/* Edit Page related CSS*/
+
+/* Edit Page */
 .edit-container {
   display: flex;
   flex-direction: column;
@@ -280,8 +288,8 @@
 
 .edit-slider-menu {
   display: flex;
-  flex-direction: column; 
-  align-items: flex-start; 
+  flex-direction: column;
+  align-items: flex-start;
   padding: 10px;
   min-width: 180px;
   height: 100%;
@@ -289,15 +297,13 @@
 
 .edit-upload-box {
   display: flex;
-  flex-grow: 1;  
+  flex-grow: 1;
   padding: 10px;
   justify-content: center;
   align-items: center;
   font-family: sans-serif;
-
   background-color: white;
   border-radius: 12px;
-  padding: 0.5rem 1rem;
   margin: 0.5rem;
   width: 160px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
@@ -315,8 +321,7 @@
   color: #9013fe;
 }
 
-/* Slider related CSS*/
-
+/* Slider */
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -325,10 +330,8 @@
   padding: 1rem;
   text-align: center;
   font-family: sans-serif;
-
   background-color: white;
   border-radius: 12px;
-  padding: 0.5rem 1rem;
   margin: 0.5rem;
   width: 160px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
@@ -341,7 +344,7 @@
   color: #9013fe;
 }
 
-/* Toggle Button related CSS */
+/* Toggle Buttons */
 .toggle-container {
   display: flex;
   flex-direction: column;
@@ -349,10 +352,9 @@
   align-items: center;
   text-align: center;
   font-family: sans-serif;
-
   background-color: white;
   border-radius: 12px;
-  padding: 0.35rem 0.25rem; 
+  padding: 0.35rem 0.25rem;
   margin: 0.5rem;
   width: 160px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
@@ -376,19 +378,18 @@
 }
 
 .toggle-button.true {
-  background-color: #28a745; 
+  background-color: #28a745;
 }
 
 .toggle-button.false {
-  background-color: #dc3545; 
+  background-color: #dc3545;
 }
 
-/* ========= Animated Background Gradient ========= */
+/* Extras */
 body {
   background-color: #f9f9f9;
 }
 
-/* ========= Smooth Fade Scroll Section (optional support) ========= */
 .scroll-section {
   opacity: 0;
   transform: translateY(20px);
@@ -400,7 +401,6 @@ body {
   transform: translateY(0);
 }
 
-/* ========= Magnetic Button Styling ========= */
 .magnetic-button {
   padding: 0.75em 1.5em;
   border: none;
@@ -419,53 +419,4 @@ body {
 
 .magnetic-button:hover {
   background-color: #9013fe;
-}
-
-/* ========= Preloader Floating Background (reuse if needed) ========= */
-.floating-background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.floating-background::before,
-.floating-background::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  animation: float 12s infinite ease-in-out alternate;
-}
-
-.floating-background::before {
-  width: 300px;
-  height: 300px;
-  top: 20%;
-  left: 15%;
-  background: #00ffc3;
-  animation-delay: 0s;
-}
-
-.floating-background::after {
-  width: 250px;
-  height: 250px;
-  top: 60%;
-  right: 10%;
-  background: #7a5fff;
-  animation-delay: 2s;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px) translateX(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-40px) translateX(20px) scale(1.1);
-  }
-  100% {
-    transform: translateY(30px) translateX(-10px) scale(0.95);
-  }
 }
