@@ -214,7 +214,6 @@ def process_image(image, brightness, contrast, grayscale,
     except Exception as e:
         print(f"Exception occurred: {e}")
     
-    
     # Encode the processed image as png.
     success, encoded_image = cv2.imencode(".png", processed_image)
     if not success:

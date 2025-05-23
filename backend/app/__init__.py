@@ -1,6 +1,6 @@
 from flask import Flask
 from .config import Config
-from .extensions import mongo, jwt
+from .extensions import mongo, jwt, cors
 from .routes.auth import auth_bp
 from .routes.user import user_bp
 from .extensions import cors
@@ -63,7 +63,6 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp)
-
     app.register_blueprint(image_bp)
 
     return app

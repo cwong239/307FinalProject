@@ -36,3 +36,4 @@ def delete_image(filename):
         return jsonify({"error": "Azure Blob Storage not configured."}), 500
 
     return remove_image(container_client, get_jwt_identity(), filename)
+

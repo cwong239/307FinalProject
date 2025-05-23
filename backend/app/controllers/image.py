@@ -81,6 +81,7 @@ def process_image_controller():
         return HTTPResponse(400).error("Image file is empty.").send()
 
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
     if image is None:
         return HTTPResponse(400).error("Invalid image file.").send()
 
