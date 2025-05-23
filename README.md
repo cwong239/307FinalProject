@@ -1,4 +1,4 @@
-#TE4 Sequence Diagrams:
+# TE4 Sequence Diagrams:
 **Note any block in the Database column if not explicitly mentioned as using Azure or Mongo DB, it is assumed to be Mongo DB**
 
 ## Register Diagram
