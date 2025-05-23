@@ -5,7 +5,7 @@
 ![image](https://github.com/user-attachments/assets/8b4f0e64-95fc-41e1-a287-82cdb03692ac)
 
 ## Login Diagram
-![image](https://github.com/user-attachments/assets/29e7a422-2d8f-48ee-a18d-f4fd273b4b93)
+![image](https://github.com/user-attachments/assets/b78f9383-9849-4161-8779-cd25f1b16878)
 
 ## Protected Route Diagram
 ![image](https://github.com/user-attachments/assets/a011900a-19f4-4ab7-b447-bf3b6ee12ab7)
