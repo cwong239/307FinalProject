@@ -1,10 +1,12 @@
 # python3.12 is recommended.
-numpy==2.2.5
-opencv-python==4.11.0.86
-ultralytics==8.3.119
+numpy>=2.2.5
+opencv-python>=4.11.0.86
+ultralytics>=8.3.119
 flask
 flask-pymongo
 flask-jwt-extended
 python-dotenv
 werkzeug
 mongo
+azure-storage-blob>=12.25.1
+flask_cors
