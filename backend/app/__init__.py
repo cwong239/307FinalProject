@@ -4,10 +4,9 @@ from .extensions import mongo, jwt
 from .routes.auth import auth_bp
 from .routes.user import user_bp
 from .extensions import cors
-
+from flask_cors import CORS
 from .extensions import azure
 import os
-
 from azure.storage.blob import BlobServiceClient
 from .routes.image import image_bp
 
@@ -15,7 +14,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize extensions
     cors.init_app(app)
 
     try:
@@ -58,6 +56,10 @@ def create_app():
     ######################################################
 
     jwt.init_app(app)
+
+    CORS(auth_bp, supports_credentials=True)
+    CORS(user_bp, supports_credentials=True)
+    CORS(image_bp, supports_credentials=True)
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp)
