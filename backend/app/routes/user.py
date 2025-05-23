@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/images', methods=['DELETE'])
+@user_bp.route('/image', methods=['DELETE'])
 @jwt_required()
 def delete():
     container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
