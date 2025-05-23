@@ -6,3 +6,5 @@ TE4
 
 ![Screenshot](TE4/protected.JPG)
 
+![Screenshot](TE4/processimage.JPG)
+
