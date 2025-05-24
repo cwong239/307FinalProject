@@ -5,4 +5,12 @@ const api = axios.create({
   withCredentials: true, // Include cookies in requests if your backend uses them
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`; // ✅ attach token
+  }
+  return config;
+});
+
 export default api;
