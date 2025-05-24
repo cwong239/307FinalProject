@@ -18,8 +18,19 @@ function LoginPage() {
     e.preventDefault();
     try {
       const response = await api.post("/login", { username, password });
+
+      // Store token and user in localStorage
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      // Set login context
       login(response.data.user);
-      navigate("/");
+
+      // Prevent preloader after login
+      sessionStorage.setItem("visitedFromLogin", "true");
+
+      // Redirect
+      navigate("/dashboard");
     } catch (err) {
       setError("Invalid username or password");
     }
@@ -37,8 +48,20 @@ function LoginPage() {
       >
         <h2>Login</h2>
         <form className="auth-form" onSubmit={handleLogin}>
-          <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           <MagneticButton type="submit">Login</MagneticButton>
         </form>
         {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}

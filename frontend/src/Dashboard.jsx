@@ -6,7 +6,7 @@ function Dashboard() {
     <div>
       <Navbar />
       <div style={{ textAlign: "center", marginTop: "4rem" }}>
-        <h1>Welcome to your Dashboard</h1>
+        <h1>Welcome!</h1>
         <p>You are logged in 🎉</p>
       </div>
     </div>
