@@ -23,8 +23,7 @@ function LoginPage() {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      // Set login context
-      login(response.data.user);
+      login(response.data.user, response.data.token);
 
       // Prevent preloader after login
       sessionStorage.setItem("visitedFromLogin", "true");

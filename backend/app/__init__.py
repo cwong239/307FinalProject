@@ -15,7 +15,7 @@ def create_app():
     app.config.from_object(Config)
 
     cors.init_app(app)
-
+    CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
     try:
         mongo.init_app(app)
         print("Mongo initialized successfully!")
@@ -56,10 +56,6 @@ def create_app():
     ######################################################
 
     jwt.init_app(app)
-
-    CORS(auth_bp, supports_credentials=True)
-    CORS(user_bp, supports_credentials=True)
-    CORS(image_bp, supports_credentials=True)
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp)
