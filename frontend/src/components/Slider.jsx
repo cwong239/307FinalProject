@@ -12,7 +12,7 @@ function Slider({ name = "Slider" }) {
 
   return (
      <div className="slider-container">
-      <p className="slider-name">{name}</p>
+      <p className="slider-name">{name}: {value}</p>
       <input 
         type="range" 
         min="0" 

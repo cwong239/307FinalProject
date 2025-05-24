@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Slider from "./components/Slider";
 import ToggleButton from "./components/ToggleButton";
+import api from "./api";
 import "./style.css";
 
 function EditPage() {
   const [imageSrc, setImageSrc] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef();
 
   const handleImageUpload = (event) => {
@@ -14,6 +16,7 @@ function EditPage() {
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
+      setImageFile(file);
     }
   };
 
@@ -23,6 +26,7 @@ function EditPage() {
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
+      setImageFile(file);
     }
   };
 
@@ -81,6 +85,7 @@ function EditPage() {
         >
           <ToggleButton name="Gray Scale" />
           <ToggleButton name="Background Removal" />
+          <button className="submit-button">Submit</button>
         </motion.div>
       </motion.div>
 
