@@ -37,6 +37,4 @@ def login_user(data):
 
     token = create_token(from_bson(user['_id']))
 
-    return jsonify({
-        "token": token
-    }), 200
+    return HTTPResponse(200).data({ "token" : token }).send()
