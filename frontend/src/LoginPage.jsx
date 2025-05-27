@@ -28,6 +28,7 @@ function LoginPage() {
         // Pass token to login so axios headers are updated
         login(response.data.user, response.data.token);
 
+
         // Redirect after login
         navigate("/");
       } else {
