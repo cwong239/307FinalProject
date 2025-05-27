@@ -19,19 +19,23 @@ function LoginPage() {
     try {
       const response = await api.post("/login", { username, password });
 
-      // Store token and user in localStorage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log("Token stored:", response.data.token);
+        console.log("User stored:", response.data.user);
 
-      // Set login context
-      login(response.data.user);
+        // Pass token to login so axios headers are updated
+        login(response.data.user, response.data.token);
 
-      // Prevent preloader after login
-      sessionStorage.setItem("visitedFromLogin", "true");
-
-      // Redirect
-      navigate("/dashboard");
+        // Redirect after login
+        navigate("/");
+      } else {
+        console.warn("Login succeeded but no token returned.");
+        setError("Login failed: no token received.");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       setError("Invalid username or password");
     }
   };
