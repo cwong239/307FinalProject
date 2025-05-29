@@ -13,10 +13,10 @@ function EditPage() {
   const fileInputRef = useRef();
 
   // states for image parameters
-  const [brightness, setBrightness] = useState(0.5);
-  const [contrast, setContrast] = useState(50);
-  const [gamma, setGamma] = useState(50);
-  const [opacity, setOpacity] = useState(50);
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(1);
+  const [gamma, setGamma] = useState(1);
+  const [opacity, setOpacity] = useState(1);
   const [grayscale, setGrayscale] = useState(false);
   const [removeBg, setRemoveBg] = useState(false);
 
@@ -66,6 +66,7 @@ function EditPage() {
     }
 
     console.log("Brightness:", brightness);
+    console.log("Grayscale:", grayscale);
 
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -111,10 +112,10 @@ function EditPage() {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <div className="edit-slider-menu">
-            <Slider name="Brightness" value={brightness} min={0} max={1} step={0.01} onChange={setBrightness}/>
-            <Slider name="Gamma" value={gamma} onChange={setGamma}/>
-            <Slider name="Contrast" value={contrast} onChange={setContrast}/>
-            <Slider name="Opacity" value={opacity} onChange={setOpacity}/>
+            <Slider name="Brightness" value={brightness} min={-100} max={100} step={1} onChange={setBrightness}/>
+            <Slider name="Gamma" value={gamma} min={0.1} max={5} step={0.1} onChange={setGamma}/>
+            <Slider name="Contrast" value={contrast} min={0.1} max={5} step={0.1} onChange={setContrast}/>
+            <Slider name="Opacity" value={opacity} min={0} max={1} step={0.01} onChange={setOpacity}/>
           </div>
 
           <motion.div
