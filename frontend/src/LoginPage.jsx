@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
-import { AuthContext } from "./AuthContext";
+import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -12,7 +12,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,13 +20,12 @@ function LoginPage() {
       const response = await api.post("/login", { username, password });
 
       if (response.data.token) {
+        const user = {username};
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        console.log("Token stored:", response.data.token);
-        console.log("User stored:", response.data.user);
+        localStorage.setItem("user", JSON.stringify(user));
 
         // Pass token to login so axios headers are updated
-        login(response.data.user, response.data.token);
+        login(user, response.data.token);
 
 
         // Redirect after login

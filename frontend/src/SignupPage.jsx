@@ -7,8 +7,6 @@ import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
 function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,8 +16,6 @@ function SignupPage() {
     e.preventDefault();
     try {
       const response = await api.post("/register", {
-        name,
-        email,
         username,
         password,
       });
@@ -47,20 +43,6 @@ function SignupPage() {
       >
         <h2>Sign Up</h2>
         <form className="auth-form" onSubmit={handleSignup}>
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          {/* <input
-            type="email"
-            placeholder="Cal Poly Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          /> */}
           <input
             type="text"
             placeholder="Username"
