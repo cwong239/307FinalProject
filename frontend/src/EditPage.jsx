@@ -6,14 +6,47 @@ import ToggleButton from "./components/ToggleButton";
 import "./style.css";
 
 function EditPage() {
+  const storedToken = localStorage.getItem("token");
   const [imageSrc, setImageSrc] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [processedImage, setProcessedImage] = useState(null);
   const fileInputRef = useRef();
+
+  // states for image parameters
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(1);
+  const [gamma, setGamma] = useState(1);
+  const [opacity, setOpacity] = useState(1);
+  const [grayscale, setGrayscale] = useState(false);
+  const [removeBg, setRemoveBg] = useState(false);
+
+  if (!storedToken) {
+    return (
+      <>
+        <Navbar />
+        <motion.div
+          className="gallery-container"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1>Not logged in</h1>
+        </motion.div>
+        <footer className="footer">
+          <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+        </footer>
+      </>
+    );
+  }
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
+      setImageFile(file);
+      setProcessedImage(null);
     }
   };
 
@@ -23,8 +56,85 @@ function EditPage() {
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
+      setImageFile(file);
+      setProcessedImage(null);
     }
   };
+
+  const handleSubmit = async () => {
+    if (!imageFile) {
+      alert("Please upload an image first.");
+      return;
+    }
+
+    console.log("Brightness:", brightness);
+    console.log("Grayscale:", grayscale);
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("brightness", brightness);
+    formData.append("contrast", contrast);
+    formData.append("gamma", gamma);
+    formData.append("opacity", opacity);
+    formData.append("grayscale", grayscale);
+    formData.append("remove_bg", removeBg);
+
+    try {
+      const response = await fetch("http://localhost:5000/image", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
+      console.log("Upload successful:", response.data);
+      const data = await response.json();
+      setProcessedImage(data.filename);
+      console.log(processedImage);
+      //alert("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload failed.");
+    }
+  };
+
+  const handleDownload= async () => {
+    if (!processedImage) {
+      alert("Please submit an image for processing first.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const temp = document.createElement("a");
+    temp.href = url;
+    temp.download = processedImage;
+
+    // Append to the DOM, click to trigger download, then remove
+    document.body.appendChild(temp);
+    temp.click();
+    temp.remove();
+
+    // Clean up the URL object
+    window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error(error);
+      alert("Download failed.");
+    }
+  };
+
 
   return (
     <>
@@ -44,9 +154,10 @@ function EditPage() {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <div className="edit-slider-menu">
-            <Slider name="Brightness" />
-            <Slider name="Gamma" />
-            <Slider name="Contrast" />
+            <Slider name="Brightness" value={brightness} min={-100} max={100} step={1} onChange={setBrightness}/>
+            <Slider name="Gamma" value={gamma} min={0.1} max={5} step={0.1} onChange={setGamma}/>
+            <Slider name="Contrast" value={contrast} min={0.1} max={5} step={0.1} onChange={setContrast}/>
+            <Slider name="Opacity" value={opacity} min={0} max={1} step={0.01} onChange={setOpacity}/>
           </div>
 
           <motion.div
@@ -79,8 +190,13 @@ function EditPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <ToggleButton name="Gray Scale" />
-          <ToggleButton name="Background Removal" />
+          <ToggleButton name="Gray Scale" value={grayscale} onToggle={setGrayscale}/>
+          <ToggleButton name="Background Removal" value={removeBg} onToggle={setRemoveBg}/>
+          <button className="submit-button" onClick={handleSubmit}>Submit</button>
+          {imageFile && processedImage && (
+            <button className="submit-button" onClick={handleDownload}>Download Image</button>
+          )}
+          
         </motion.div>
       </motion.div>
 
