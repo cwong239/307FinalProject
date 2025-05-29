@@ -9,7 +9,7 @@ function EditPage() {
   const storedToken = localStorage.getItem("token");
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [processedImageUrl, setProcessedImageUrl] = useState(null);
+  const [processedImage, setProcessedImage] = useState(null);
   const fileInputRef = useRef();
 
   // states for image parameters
@@ -46,6 +46,7 @@ function EditPage() {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
       setImageFile(file);
+      setProcessedImage(null);
     }
   };
 
@@ -56,6 +57,7 @@ function EditPage() {
       const imageURL = URL.createObjectURL(file);
       setImageSrc(imageURL);
       setImageFile(file);
+      setProcessedImage(null);
     }
   };
 
@@ -87,12 +89,52 @@ function EditPage() {
       });
 
       console.log("Upload successful:", response.data);
+      const data = await response.json();
+      setProcessedImage(data.filename);
+      console.log(processedImage);
       //alert("Image uploaded successfully!");
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Upload failed.");
     }
   };
+
+  const handleDownload= async () => {
+    if (!processedImage) {
+      alert("Please submit an image for processing first.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const temp = document.createElement("a");
+    temp.href = url;
+    temp.download = processedImage;
+
+    // Append to the DOM, click to trigger download, then remove
+    document.body.appendChild(temp);
+    temp.click();
+    temp.remove();
+
+    // Clean up the URL object
+    window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error(error);
+      alert("Download failed.");
+    }
+  };
+
 
   return (
     <>
@@ -151,6 +193,10 @@ function EditPage() {
           <ToggleButton name="Gray Scale" value={grayscale} onToggle={setGrayscale}/>
           <ToggleButton name="Background Removal" value={removeBg} onToggle={setRemoveBg}/>
           <button className="submit-button" onClick={handleSubmit}>Submit</button>
+          {imageFile && processedImage && (
+            <button className="submit-button" onClick={handleDownload}>Download Image</button>
+          )}
+          
         </motion.div>
       </motion.div>
 
