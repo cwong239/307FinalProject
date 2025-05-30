@@ -5,7 +5,9 @@ import "./style.css";
 
 function ImagesPage() {
   const storedToken = localStorage.getItem("token");
-  const [filenames, setFilenames] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState({});
+  const [visibleCount, setVisibleCount] = useState(4);
 
   if (!storedToken) {
     return (
@@ -28,7 +30,7 @@ function ImagesPage() {
   }
 
   useEffect(() => {
-    const fetchFilenames = async () => {
+    const fetchFiles = async () => {
       try {
         const response = await fetch("http://localhost:5000/image", {
           method: "GET",
@@ -38,19 +40,26 @@ function ImagesPage() {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch filenames");
+          throw new Error("Failed to fetch file names");
         }
 
         const data = await response.json();
-        setFilenames(data);
+        setFiles(data);
       } catch (error) {
-        console.error("Error fetching filenames:", error);
-        setFilenames([]);
+        console.error("Error fetching file names:", error);
+        alert("File name fetching failed.");
+        setFiles([]);
       }
     };
 
-    fetchFilenames();
+    fetchFiles();
   }, [storedToken]);
+
+  const convertTimestampToDate = (ts) => {
+    if (!ts) return "";
+    const date = new Date(ts * 1000);
+    return date.toLocaleString();
+  };
 
   const downloadImage = async (filename) => {
     try {
@@ -60,21 +69,37 @@ function ImagesPage() {
           Authorization: `Bearer ${storedToken}`,
         },
       });
-      if (!response.ok) throw new Error("Failed to download image");
+
+      if (!response.ok) {
+          throw new Error("Failed to download image");
+        }
 
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      const url = URL.createObjectURL(blob);
+      return url;
     } catch (error) {
       console.error(`Error downloading ${filename}:`, error);
+      return null;
     }
+  };
+
+  const fetchAndStoreImage = async (filename) => {
+    const url = await downloadImage(filename);
+    if (url) {
+      setImageUrls((prev) => ({ ...prev, [filename]: url }));
+    }
+  };
+
+  useEffect(() => {
+    files.slice(0, visibleCount).forEach((file) => {
+      if (!imageUrls[file.filename]) {
+        fetchAndStoreImage(file.filename);
+      }
+    });
+  }, [files, visibleCount]);
+
+  const loadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 4, files.length));
   };
 
   return (
@@ -89,29 +114,51 @@ function ImagesPage() {
       >
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
-          {filenames.map((filename, index) => (
+          {files.slice(0, visibleCount).map((file, index) => (
             <div className="gallery-item" key={index}>
-              <img
-                src={`http://localhost:5000/image/${filename}`}
-                alt={filename}
-                className="gallery-image"
-              />
+              {imageUrls[file.filename] ? (
+                <img
+                  src={imageUrls[file.filename]}
+                  alt={file.filename}
+                  className="gallery-image"
+                />
+              ) : (
+                <div className="image-placeholder">Loading...</div>
+              )}
+              <div className="file-info">
+                <p>
+                  <strong>Name:</strong> {file.filename}
+                </p>
+                <p>
+                  <strong>Uploaded:</strong> {convertTimestampToDate(file.time)}
+                </p>
+              </div>
+
               <button
-                onClick={() => downloadImage(filename)}
                 className="download-button"
+                onClick={async () => {
+                  const downloadUrl = await downloadImage(file.filename);
+                  if (downloadUrl) {
+                    const link = document.createElement("a");
+                    link.href = downloadUrl;
+                    link.download = file.filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(downloadUrl);
+                  }
+                }}
               >
                 Download
               </button>
             </div>
           ))}
         </div>
-        <audio controls>
-          <source
-            src="/placeHolderImages/VeryImportantDoNotDelete.mp3"
-            type="audio/mpeg"
-          />
-          Your browser does not support the audio element.
-        </audio>
+        {visibleCount < files.length && (
+          <button className="load-more-button" onClick={loadMore}>
+            Load More
+          </button>
+        )}
       </motion.div>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>
