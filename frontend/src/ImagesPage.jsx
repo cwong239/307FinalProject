@@ -7,7 +7,6 @@ function ImagesPage() {
   const storedToken = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
-  const [visibleCount, setVisibleCount] = useState(4);
 
   if (!storedToken) {
     return (
@@ -71,8 +70,8 @@ function ImagesPage() {
       });
 
       if (!response.ok) {
-          throw new Error("Failed to download image");
-        }
+        throw new Error("Failed to download image");
+      }
 
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -91,16 +90,12 @@ function ImagesPage() {
   };
 
   useEffect(() => {
-    files.slice(0, visibleCount).forEach((file) => {
+    files.forEach((file) => {
       if (!imageUrls[file.filename]) {
         fetchAndStoreImage(file.filename);
       }
     });
-  }, [files, visibleCount]);
-
-  const loadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 4, files.length));
-  };
+  }, [files]);
 
   return (
     <>
@@ -114,7 +109,7 @@ function ImagesPage() {
       >
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
-          {files.slice(0, visibleCount).map((file, index) => (
+          {files.map((file, index) => (
             <div className="gallery-item" key={index}>
               {imageUrls[file.filename] ? (
                 <img
@@ -154,11 +149,6 @@ function ImagesPage() {
             </div>
           ))}
         </div>
-        {visibleCount < files.length && (
-          <button className="load-more-button" onClick={loadMore}>
-            Load More
-          </button>
-        )}
       </motion.div>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>

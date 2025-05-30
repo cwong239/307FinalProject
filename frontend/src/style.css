@@ -282,43 +282,6 @@
   box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
 }
 
-.load-more-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: sans-serif;
-  font-weight: bold;
-  font-size: 1rem;
-
-  width: 160px;
-  height: 80px;
-
-  padding: 0.35rem 0.25rem;
-  margin: 2rem auto 0; /* centers horizontally with margin on top */
-
-  background: linear-gradient(135deg, #4f46e5, #6d28d9);
-  color: white;
-
-  border: none;
-  border-radius: 12px;
-
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-}
-
-.load-more-button:hover {
-  background: linear-gradient(135deg, #6d28d9, #4f46e5);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-}
-
-.load-more-button:active {
-  transform: scale(0.98);
-  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
-}
-
-
 
 /* Edit Page */
 .edit-container {
