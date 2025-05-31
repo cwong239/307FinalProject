@@ -7,7 +7,7 @@ def upload_bytes_to_storage(container_client, encoded_image_bytes, filename, ima
         blob_client = container_client.get_blob_client(blob=filename)
         image_stream = io.BytesIO(encoded_image_bytes)
         blob_client.upload_blob(image_stream, overwrite=True)
-        return HTTPResponse(200).data({"filename": image_name}).send()
+        return HTTPResponse(201).data({"filename": image_name}).send()
     except Exception as e:
         return HTTPResponse(500).error(f"An error occurred during upload: {str(e)}").send()
 

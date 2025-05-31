@@ -7,8 +7,8 @@ from app.utils.response import HTTPResponse
 
 
 def register_user(data):
-    if not data['username'] or not data['password'] or len(data['username']) < 3 or len(data['password']) < 3:
-        return HTTPResponse(400).message("Must include a username and passoword of at least 3 characters").send()
+    if not data['username'] or not data['password'] or len(data['username']) <= 3 or len(data['password']) <= 3:
+        return HTTPResponse(400).message("Must include a username and passoword of at least 4 characters").send()
 
     if find_user_by_username(data['username']):
         return HTTPResponse(409).message("A user with that name already exists").send()
@@ -27,7 +27,7 @@ def register_user(data):
 
 def login_user(data):
     if not data['username'] or not data['password'] or len(data['username']) <= 3 or len(data['password']) <= 3:
-        return HTTPResponse(400).message("Must include a username and passoword of at least 3 characters").send()
+        return HTTPResponse(400).message("Must include a username and password of at least 4 characters").send()
 
     user = find_user_by_username(data['username'])
 

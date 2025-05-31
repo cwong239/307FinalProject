@@ -36,11 +36,11 @@ def save_image(container_client, uploader_id):
     filesize = file.tell()
     file.seek(0)
     if filesize > MAX_FILESIZE:
-        return HTTPResponse(400).error(f"File size exceeds max of {MAX_FILESIZE} bytes").send()
+        return HTTPResponse(403).error(f"File size exceeds max of {MAX_FILESIZE} bytes").send()
 
     used_space = get_total_filesize_used(uploader_id)
     if used_space + filesize > MAX_USER_STORAGE:
-        return HTTPResponse(400).error("User storage quota exceeded (20 MB max)").send()
+        return HTTPResponse(403).error("User storage quota exceeded (20 MB max)").send()
 
     file_bytes = file.read()
     file.seek(0)
@@ -111,7 +111,11 @@ def load_image(container_client, requester_id, filename):
 
 def load_filenames(uploader_id):
     images = find_images_by_uploader(uploader_id)
-    return [img for img in images]
+    return [{
+        "filename": img["filename"],
+        "filesize": img["filesize"],
+        "time": img["time"]
+    } for img in images]
 
 def remove_image(container_client, uploader_id, filename):
     image_doc = find_image_by_filename(filename, uploader_id)
