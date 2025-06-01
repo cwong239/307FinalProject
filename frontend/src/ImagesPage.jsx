@@ -33,16 +33,9 @@ function ImagesPage() {
   const [errorStatusMessage, setErrorStatusMessage] = useState("");
 
   if (!storedToken) {
-    useEffect(() => {
-      const timeout = setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
-      return () => clearTimeout(timeout); // cleanup on unmount
-    }, []);
-
-    return <ErrorStatusMessage statusMessage="Not logged in. Redirecting to login..." />;
+    window.location.href = "/login";
+    return null;
   }
-
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -55,16 +48,12 @@ function ImagesPage() {
         });
 
         switch (response.status) {
-          case 200: {
+          case 200:
             const data = await response.json();
             setFiles(data);
             break;
-          }
           case 401:
-            setErrorStatusMessage("Unauthorized. Redirecting to login...");
-            setTimeout(() => {
-              window.location.href = "/login";
-            }, 1000);
+            window.location.href = "/login";
             break;
           default:
             setErrorStatusMessage("Failed to fetch file list.");
@@ -100,10 +89,7 @@ function ImagesPage() {
           const blob = await response.blob();
           return URL.createObjectURL(blob);
         case 401:
-          setErrorStatusMessage("Unauthorized. Redirecting to login...");
-          setTimeout(() => {
-            window.location.href = "/login";
-          }, 1000);
+          window.location.href = "/login";
           return null;
         case 403:
           setErrorStatusMessage(`Access denied to image: ${filename}`);
