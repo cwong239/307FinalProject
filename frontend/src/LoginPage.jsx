@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
-import { AuthContext } from "./AuthContext";
+import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -12,25 +12,30 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post("/login", { username, password });
 
-      // Store token and user in localStorage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (response.data.token) {
+        const user = {username};
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(user));
 
-      login(response.data.user, response.data.token);
+        // Pass token to login so axios headers are updated
+        login(user, response.data.token);
 
-      // Prevent preloader after login
-      sessionStorage.setItem("visitedFromLogin", "true");
 
-      // Redirect
-      navigate("/dashboard");
+        // Redirect after login
+        navigate("/");
+      } else {
+        console.warn("Login succeeded but no token returned.");
+        setError("Login failed: no token received.");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       setError("Invalid username or password");
     }
   };
