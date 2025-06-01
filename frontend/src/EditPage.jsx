@@ -1,15 +1,55 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Slider from "./components/Slider";
 import ToggleButton from "./components/ToggleButton";
 import "./style.css";
 
+function ErrorStatusMessage({ statusMessage }) {
+  return (
+    <>
+      <Navbar />
+      <motion.div
+        className="gallery-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1>Status Message</h1>
+        <p style={{ fontSize: "1.2rem", marginTop: "1rem", color: "#b22222" }}>
+          {statusMessage || "An error occurred."}
+        </p>
+      </motion.div>
+      <footer className="footer">
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
+    </>
+  );
+}
+
 function EditPage() {
   const storedToken = localStorage.getItem("token");
+  const [redirecting, setRedirecting] = useState(false);
+
+  useEffect(() => {
+    if (!storedToken) {
+      setRedirecting(true);
+      const timeout = setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [storedToken]);
+
+  if (redirecting) {
+    return <ErrorStatusMessage statusMessage="Not logged in. Redirecting to login..." />;
+  }
+
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
+  const [errorStatusMessage, setErrorStatusMessage] = useState("");
   const fileInputRef = useRef();
 
   // states for image parameters
@@ -19,26 +59,6 @@ function EditPage() {
   const [opacity, setOpacity] = useState(1);
   const [grayscale, setGrayscale] = useState(false);
   const [removeBg, setRemoveBg] = useState(false);
-
-  if (!storedToken) {
-    return (
-      <>
-        <Navbar />
-        <motion.div
-          className="gallery-container"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1>Not logged in</h1>
-        </motion.div>
-        <footer className="footer">
-          <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-        </footer>
-      </>
-    );
-  }
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -67,9 +87,6 @@ function EditPage() {
       return;
     }
 
-    console.log("Brightness:", brightness);
-    console.log("Grayscale:", grayscale);
-
     const formData = new FormData();
     formData.append("image", imageFile);
     formData.append("brightness", brightness);
@@ -88,18 +105,32 @@ function EditPage() {
         },
       });
 
-      console.log("Upload successful:", response.data);
-      const data = await response.json();
-      setProcessedImage(data.filename);
-      console.log(processedImage);
-      //alert("Image uploaded successfully!");
+      switch (response.status) {
+        case 201:
+          const data = await response.json();
+          setProcessedImage(data.filename);
+          return;
+        case 400:
+          setErrorStatusMessage("Bad request.");
+          return;
+        case 401:
+          setErrorStatusMessage("Unauthorized. Redirecting to login...");
+          setTimeout(() => (window.location.href = "/login"), 1000);
+          return;
+        case 403:
+          setErrorStatusMessage("User quota exceeded (20MB).");
+          return;
+        default:
+          setErrorStatusMessage("Failed to process image.");
+          return;
+      }
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Upload failed.");
     }
   };
 
-  const handleDownload= async () => {
+  const handleDownload = async () => {
     if (!processedImage) {
       alert("Please submit an image for processing first.");
       return;
@@ -113,33 +144,48 @@ function EditPage() {
         },
       });
 
-    const blob = await response.blob();
-
-    const url = window.URL.createObjectURL(blob);
-
-    const temp = document.createElement("a");
-    temp.href = url;
-    temp.download = processedImage;
-
-    // Append to the DOM, click to trigger download, then remove
-    document.body.appendChild(temp);
-    temp.click();
-    temp.remove();
-
-    // Clean up the URL object
-    window.URL.revokeObjectURL(url);
-
+      switch (response.status) {
+        case 200:
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const temp = document.createElement("a");
+          temp.href = url;
+          temp.download = processedImage;
+          document.body.appendChild(temp);
+          temp.click();
+          temp.remove();
+          window.URL.revokeObjectURL(url);
+          return;
+        case 401:
+          setErrorStatusMessage("Unauthorized. Redirecting to login...");
+          setTimeout(() => (window.location.href = "/login"), 1000);
+          return;
+        case 403:
+          setErrorStatusMessage(`Access denied to image.`);
+          return;
+        case 404:
+          setErrorStatusMessage(`Image not found.`);
+          return;
+        case 400:
+          setErrorStatusMessage("Bad request.");
+          return;
+        default:
+          setErrorStatusMessage("Server error occurred while downloading image.");
+          return;
+      }
     } catch (error) {
       console.error(error);
       alert("Download failed.");
     }
   };
 
+  if (errorStatusMessage) {
+    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+  }
 
   return (
     <>
       <Navbar />
-
       <motion.div
         className="edit-container"
         initial={{ opacity: 0, y: 40 }}
@@ -154,10 +200,10 @@ function EditPage() {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <div className="edit-slider-menu">
-            <Slider name="Brightness" value={brightness} min={-100} max={100} step={1} onChange={setBrightness}/>
-            <Slider name="Gamma" value={gamma} min={0.1} max={5} step={0.1} onChange={setGamma}/>
-            <Slider name="Contrast" value={contrast} min={0.1} max={5} step={0.1} onChange={setContrast}/>
-            <Slider name="Opacity" value={opacity} min={0} max={1} step={0.01} onChange={setOpacity}/>
+            <Slider name="Brightness" value={brightness} min={-100} max={100} step={1} onChange={setBrightness} />
+            <Slider name="Gamma" value={gamma} min={0.1} max={5} step={0.1} onChange={setGamma} />
+            <Slider name="Contrast" value={contrast} min={0.1} max={5} step={0.1} onChange={setContrast} />
+            <Slider name="Opacity" value={opacity} min={0} max={1} step={0.01} onChange={setOpacity} />
           </div>
 
           <motion.div
@@ -190,13 +236,16 @@ function EditPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <ToggleButton name="Gray Scale" value={grayscale} onToggle={setGrayscale}/>
-          <ToggleButton name="Background Removal" value={removeBg} onToggle={setRemoveBg}/>
-          <button className="submit-button" onClick={handleSubmit}>Submit</button>
+          <ToggleButton name="Gray Scale" value={grayscale} onToggle={setGrayscale} />
+          <ToggleButton name="Background Removal" value={removeBg} onToggle={setRemoveBg} />
+          <button className="submit-button" onClick={handleSubmit}>
+            Submit
+          </button>
           {imageFile && processedImage && (
-            <button className="submit-button" onClick={handleDownload}>Download Image</button>
+            <button className="submit-button" onClick={handleDownload}>
+              Download Image
+            </button>
           )}
-          
         </motion.div>
       </motion.div>
 
