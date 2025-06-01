@@ -30,20 +30,10 @@ function ErrorStatusMessage({ statusMessage }) {
 
 function EditPage() {
   const storedToken = localStorage.getItem("token");
-  const [redirecting, setRedirecting] = useState(false);
 
-  useEffect(() => {
-    if (!storedToken) {
-      setRedirecting(true);
-      const timeout = setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [storedToken]);
-
-  if (redirecting) {
-    return <ErrorStatusMessage statusMessage="Not logged in. Redirecting to login..." />;
+  if (!storedToken) {
+    window.location.href = "/login";
+    return null;
   }
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -114,8 +104,7 @@ function EditPage() {
           setErrorStatusMessage("Bad request.");
           return;
         case 401:
-          setErrorStatusMessage("Unauthorized. Redirecting to login...");
-          setTimeout(() => (window.location.href = "/login"), 1000);
+          window.location.href = "/login";
           return;
         case 403:
           setErrorStatusMessage("User quota exceeded (20MB).");
@@ -157,8 +146,7 @@ function EditPage() {
           window.URL.revokeObjectURL(url);
           return;
         case 401:
-          setErrorStatusMessage("Unauthorized. Redirecting to login...");
-          setTimeout(() => (window.location.href = "/login"), 1000);
+          window.location.href = "/login";
           return;
         case 403:
           setErrorStatusMessage(`Access denied to image.`);
