@@ -3,30 +3,46 @@ import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
+function ErrorStatusMessage({ statusMessage }) {
+  return (
+    <>
+      <Navbar />
+      <motion.div
+        className="gallery-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1>Status Message</h1>
+        <p style={{ fontSize: "1.2rem", marginTop: "1rem", color: "#b22222" }}>
+          {statusMessage || "An error occurred."}
+        </p>
+      </motion.div>
+      <footer className="footer">
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
+    </>
+  );
+}
+
 function ImagesPage() {
   const storedToken = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
+  const [errorStatusMessage, setErrorStatusMessage] = useState("");
 
   if (!storedToken) {
-    return (
-      <>
-        <Navbar />
-        <motion.div
-          className="gallery-container"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1>Not logged in</h1>
-        </motion.div>
-        <footer className="footer">
-          <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-        </footer>
-      </>
-    );
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+      return () => clearTimeout(timeout); // cleanup on unmount
+    }, []);
+
+    return <ErrorStatusMessage statusMessage="Not logged in. Redirecting to login..." />;
   }
+
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -38,19 +54,29 @@ function ImagesPage() {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch file names");
+        switch (response.status) {
+          case 200: {
+            const data = await response.json();
+            setFiles(data);
+            break;
+          }
+          case 401:
+            setErrorStatusMessage("Unauthorized. Redirecting to login...");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 1000);
+            break;
+          default:
+            setErrorStatusMessage("Failed to fetch file list.");
+            setFiles([]);
+            break;
         }
-
-        const data = await response.json();
-        setFiles(data);
       } catch (error) {
         console.error("Error fetching file names:", error);
-        alert("File name fetching failed.");
+        setErrorStatusMessage("An unexpected error occurred.");
         setFiles([]);
       }
     };
-
     fetchFiles();
   }, [storedToken]);
 
@@ -69,15 +95,32 @@ function ImagesPage() {
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to download image");
+      switch (response.status) {
+        case 200:
+          const blob = await response.blob();
+          return URL.createObjectURL(blob);
+        case 401:
+          setErrorStatusMessage("Unauthorized. Redirecting to login...");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1000);
+          return null;
+        case 403:
+          setErrorStatusMessage(`Access denied to image: ${filename}`);
+          return null;
+        case 404:
+          setErrorStatusMessage(`Image not found: ${filename}`);
+          return null;
+        case 400:
+          setErrorStatusMessage("Bad request.");
+          return null;
+        default:
+          setErrorStatusMessage("Server error occurred while downloading image.");
+          return null;
       }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      return url;
     } catch (error) {
       console.error(`Error downloading ${filename}:`, error);
+      setErrorStatusMessage("An unexpected error occurred while downloading.");
       return null;
     }
   };
@@ -89,13 +132,17 @@ function ImagesPage() {
     }
   };
 
+  if (errorStatusMessage) {
+    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+  }
+
   useEffect(() => {
     files.forEach((file) => {
       if (!imageUrls[file.filename]) {
         fetchAndStoreImage(file.filename);
       }
     });
-  }, [files]);
+  }, [files, imageUrls, errorStatusMessage]);
 
   return (
     <>

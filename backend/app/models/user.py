@@ -33,6 +33,10 @@ def delete_image(filename, uploader_id):
     result = mongo.db.images.delete_one({"filename": filename, "uploader": uploader_id})
     return result.deleted_count > 0
 
+def delete_account(user_id):
+    result = mongo.db.users.delete_one({"_id": user_id})
+    return result.deleted_count > 0
+
 def get_total_filesize_used(uploader_id):
     pipeline = [
         {"$match": {"uploader": uploader_id}},
