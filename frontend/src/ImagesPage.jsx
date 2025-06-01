@@ -54,32 +54,29 @@ function ImagesPage() {
           },
         });
 
-        if (response.status === 401) {
-          useEffect(() => {
-            const timeout = setTimeout(() => {
+        switch (response.status) {
+          case 200: {
+            const data = await response.json();
+            setFiles(data);
+            break;
+          }
+          case 401:
+            setErrorStatusMessage("Unauthorized. Redirecting to login...");
+            setTimeout(() => {
               window.location.href = "/login";
             }, 1000);
-            return () => clearTimeout(timeout);
-          }, []);
-
-          return;
+            break;
+          default:
+            setErrorStatusMessage("Failed to fetch file list.");
+            setFiles([]);
+            break;
         }
-
-        if (!response.ok) {
-          setErrorStatusMessage("Failed to fetch file list.");
-          setFiles([]);
-          return;
-        }
-
-        const data = await response.json();
-        setFiles(data);
       } catch (error) {
         console.error("Error fetching file names:", error);
         setErrorStatusMessage("An unexpected error occurred.");
         setFiles([]);
       }
     };
-
     fetchFiles();
   }, [storedToken]);
 
@@ -99,6 +96,9 @@ function ImagesPage() {
       });
 
       switch (response.status) {
+        case 200:
+          const blob = await response.blob();
+          return URL.createObjectURL(blob);
         case 401:
           setErrorStatusMessage("Unauthorized. Redirecting to login...");
           setTimeout(() => {
@@ -115,16 +115,9 @@ function ImagesPage() {
           setErrorStatusMessage("Bad request.");
           return null;
         default:
-          break;
+          setErrorStatusMessage("Server error occurred while downloading image.");
+          return null;
       }
-
-      if (!response.ok) {
-        setErrorStatusMessage("Server error occurred while downloading image.");
-        return null;
-      }
-
-      const blob = await response.blob();
-      return URL.createObjectURL(blob);
     } catch (error) {
       console.error(`Error downloading ${filename}:`, error);
       setErrorStatusMessage("An unexpected error occurred while downloading.");
@@ -139,18 +132,17 @@ function ImagesPage() {
     }
   };
 
+  if (errorStatusMessage) {
+    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+  }
+
   useEffect(() => {
-    if (errorStatusMessage) return; 
     files.forEach((file) => {
       if (!imageUrls[file.filename]) {
         fetchAndStoreImage(file.filename);
       }
     });
   }, [files, imageUrls, errorStatusMessage]);
-
-  if (errorStatusMessage) {
-    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
-  }
 
   return (
     <>
