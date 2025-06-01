@@ -39,14 +39,17 @@ function ImagesPage() {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch file names");
+          if (response.status === 401) {
+            throw new Error("Unauthorized. Please log in again.");
+          }
+          throw new Error("Failed to fetch file names.");
         }
 
         const data = await response.json();
         setFiles(data);
       } catch (error) {
         console.error("Error fetching file names:", error);
-        alert("File name fetching failed.");
+        alert(error.message);
         setFiles([]);
       }
     };
@@ -70,7 +73,18 @@ function ImagesPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to download image");
+        switch (response.status) {
+          case 400:
+            throw new Error("Missing or invalid filename.");
+          case 401:
+            throw new Error("Unauthorized. Please log in again.");
+          case 403:
+            throw new Error("Access denied to this image.");
+          case 404:
+            throw new Error("Image not found.");
+          default:
+            throw new Error("Failed to download image.");
+        }
       }
 
       const blob = await response.blob();
@@ -78,6 +92,7 @@ function ImagesPage() {
       return url;
     } catch (error) {
       console.error(`Error downloading ${filename}:`, error);
+      alert(`Download error: ${error.message}`);
       return null;
     }
   };
