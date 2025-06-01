@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, jsonify, request
 from ..controllers.image import save_image, load_image, load_filenames, remove_image
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.utils.response import HTTPResponse
 
 image_bp = Blueprint('image_bp', __name__)
 
@@ -9,7 +10,7 @@ image_bp = Blueprint('image_bp', __name__)
 def upload_image():
     container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
     if not container_client:
-        return jsonify({"error": "Azure Blob Storage not configured."}), 500
+        return HTTPResponse(500).error("Azure Blob Storage not configured").send()
     return save_image(container_client, get_jwt_identity())
 
 
@@ -18,7 +19,7 @@ def upload_image():
 def download_image(filename):
     container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
     if not container_client:
-        return jsonify({"error": "Azure Blob Storage not configured."}), 500
+        return HTTPResponse(500).error("Azure Blob Storage not configured").send()
 
     return load_image(container_client, get_jwt_identity(), filename)
 
@@ -33,7 +34,6 @@ def get_filenames():
 def delete_image(filename):
     container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
     if not container_client:
-        return jsonify({"error": "Azure Blob Storage not configured."}), 500
+        return HTTPResponse(500).error("Azure Blob Storage not configured").send()
 
     return remove_image(container_client, get_jwt_identity(), filename)
-
