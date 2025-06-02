@@ -1,16 +1,22 @@
-from flask import Blueprint, request, jsonify
-from app.controllers.auth import register_user, login_user
+from flask import Blueprint, request, jsonify, current_app
+from app.controllers.user import purge_images, purge_account
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/<user_id>', methods=['DELETE'])
+@user_bp.route('/image', methods=['DELETE'])
 @jwt_required()
-def delete(user_id):
-    return True
+def delete_image():
+    container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
+    if not container_client:
+        return HTTPResponse(500).error("Azure Blob Storage not configured").send()
 
-@user_bp.route('', methods=['GET'])
+    return purge_images(container_client, get_jwt_identity())
+
+@user_bp.route('/delete', methods=['DELETE'])
 @jwt_required()
-def test():
-    print(get_jwt_identity())
-    return get_jwt_identity()
+def delete_account():
+    container_client = current_app.config.get("AZURE_CONTAINER_CLIENT")
+    if not container_client:
+        return HTTPResponse(500).error("Azure Blob Storage not configured").send()
+    return purge_account(container_client, get_jwt_identity())

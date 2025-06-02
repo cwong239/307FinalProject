@@ -9,9 +9,11 @@ function AboutPage() {
       <div className="about-container">
         <h1>About FotoMagic</h1>
         <p>
-          FotoMagic is a real-time photo editing web application built by Cal Poly students.
-          It allows users to upload or take photos and apply various filters like brightness,
-          contrast, monochrome, and more — all in the browser.
+          FotoMagic is a real-time photo editing web application
+          built by Cal Poly students. It allows users to upload
+          or take photos and apply various filters like
+          brightness, contrast, monochrome, and more — all in
+          the browser.
         </p>
 
         <h2>Key Features</h2>
@@ -26,8 +28,9 @@ function AboutPage() {
 
         <h2>Our Vision</h2>
         <p>
-          We aim to expand FotoMagic into a full-fledged editing platform with AI-powered enhancements
-          and collaboration tools.
+          We aim to expand FotoMagic into a full-fledged editing
+          platform with AI-powered enhancements and
+          collaboration tools.
         </p>
       </div>
 

@@ -1,29 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import Navbar from "./Navbar";
+import api from "./api";
+import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
 function SignupPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/auth/register", {
+        username,
+        password,
+      });
+
+      if (response.status === 201 || response.status === 200) {
+        navigate("/login");
+      } else {
+        setError("Unexpected response. Please try again.");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError("Signup failed. Please try again.");
+    }
+  };
+
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="auth-container">
+      <motion.div
+        className="auth-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+      >
         <h2>Sign Up</h2>
-        <form className="auth-form">
-          <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="Cal Poly Email" required />
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Sign Up</button>
+        <form className="auth-form" onSubmit={handleSignup}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <MagneticButton type="submit">Sign Up</MagneticButton>
         </form>
+        {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
         <p className="auth-switch">
           Already have an account? <a href="/login">Login</a>
         </p>
-      </div>
+      </motion.div>
       <footer className="footer">
-  <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-</footer>
-
-    </div>
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
+    </>
   );
 }
 
