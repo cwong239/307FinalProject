@@ -1,10 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
+import api from "./api";
 import "./style.css";
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) return;
+
+    try {
+      await api.delete("/delete");
+      logout();
+      navigate("/");
+      alert("Account deleted successfully.");
+    } catch (err) {
+      console.error("Failed to delete account:", err);
+      alert("Error deleting account. Please try again.");
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -46,9 +62,9 @@ function Navbar() {
               </span>
             </Link>
           </li>
-
         </ul>
       </div>
+
       <div className="navbar-right">
         {user ? (
           <>
@@ -59,6 +75,13 @@ function Navbar() {
               style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}
             >
               Logout
+            </button>
+            <button
+              onClick={handleDeleteAccount}
+              className="auth-link"
+              style={{ background: "none", border: "none", color: "#E41B17", cursor: "pointer", marginLeft: "1rem" }}
+            >
+              Delete Account
             </button>
           </>
         ) : (
