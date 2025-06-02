@@ -15,5 +15,8 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: npm run -w frontend lint
-      - run: npm run -w frontend build
+        working-directory: frontend
+      - run: npm run lint
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
