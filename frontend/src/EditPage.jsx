@@ -5,6 +5,8 @@ import Slider from "./components/Slider";
 import ToggleButton from "./components/ToggleButton";
 import "./style.css";
 
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+
 function ErrorStatusMessage({ statusMessage }) {
   return (
     <>
@@ -29,13 +31,6 @@ function ErrorStatusMessage({ statusMessage }) {
 }
 
 function EditPage() {
-  const storedToken = localStorage.getItem("token");
-
-  if (!storedToken) {
-    window.location.href = "/login";
-    return null;
-  }
-
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
@@ -49,6 +44,13 @@ function EditPage() {
   const [opacity, setOpacity] = useState(1);
   const [grayscale, setGrayscale] = useState(false);
   const [removeBg, setRemoveBg] = useState(false);
+
+  const storedToken = localStorage.getItem("token");
+
+  if (!storedToken) {
+    window.location.href = "/login";
+    return null;
+  }
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -87,7 +89,8 @@ function EditPage() {
     formData.append("remove_bg", removeBg);
 
     try {
-      const response = await fetch("http://localhost:5000/image", {
+      //const response = await fetch("http://localhost:5000/image", {
+      const response = await fetch(`${azure_api}/image`, {
         method: "POST",
         body: formData,
         headers: {
@@ -96,10 +99,11 @@ function EditPage() {
       });
 
       switch (response.status) {
-        case 201:
+        case 201:{
           const data = await response.json();
           setProcessedImage(data.filename);
           return;
+        }
         case 400:
           setErrorStatusMessage("Bad request.");
           return;
@@ -126,7 +130,8 @@ function EditPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+      //const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+      const response = await fetch(`${azure_api}/image/${processedImage}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${storedToken}`,
@@ -134,7 +139,7 @@ function EditPage() {
       });
 
       switch (response.status) {
-        case 200:
+        case 200: {
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const temp = document.createElement("a");
@@ -145,6 +150,7 @@ function EditPage() {
           temp.remove();
           window.URL.revokeObjectURL(url);
           return;
+        }
         case 401:
           window.location.href = "/login";
           return;

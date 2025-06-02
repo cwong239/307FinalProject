@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/', // Adjust the baseURL as per your backend configuration
+  //baseURL: 'http://localhost:5000/', // Adjust the baseURL as per your backend configuration
+  baseURL: `${azure_api}:5000/`, // Adjust the baseURL as per your backend configuration
   withCredentials: true, // Include cookies in requests if your backend uses them
 });
 

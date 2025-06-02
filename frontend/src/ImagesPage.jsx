@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+
 function ErrorStatusMessage({ statusMessage }) {
   return (
     <>
@@ -27,10 +29,11 @@ function ErrorStatusMessage({ statusMessage }) {
 }
 
 function ImagesPage() {
-  const storedToken = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
   const [errorStatusMessage, setErrorStatusMessage] = useState("");
+
+  const storedToken = localStorage.getItem("token");
 
   if (!storedToken) {
     window.location.href = "/login";
@@ -40,7 +43,8 @@ function ImagesPage() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/image", {
+        //const response = await fetch("http://localhost:5000/image", {
+        const response = await fetch(`${azure_api}/image`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${storedToken}`,
@@ -48,10 +52,11 @@ function ImagesPage() {
         });
 
         switch (response.status) {
-          case 200:
+          case 200: {
             const data = await response.json();
             setFiles(data);
             break;
+          }
           case 401:
             window.location.href = "/login";
             break;
@@ -77,7 +82,8 @@ function ImagesPage() {
 
   const downloadImage = async (filename) => {
     try {
-      const response = await fetch(`http://localhost:5000/image/${filename}`, {
+      //const response = await fetch(`http://localhost:5000/image/${filename}`, {
+      const response = await fetch(`${azure_api}/image/${filename}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${storedToken}`,
@@ -85,9 +91,10 @@ function ImagesPage() {
       });
 
       switch (response.status) {
-        case 200:
+        case 200: {
           const blob = await response.blob();
           return URL.createObjectURL(blob);
+        }
         case 401:
           window.location.href = "/login";
           return null;
