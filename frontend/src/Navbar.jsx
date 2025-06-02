@@ -12,13 +12,17 @@ function Navbar() {
     if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) return;
 
     try {
-      await api.delete("/delete");
-      logout();
-      navigate("/");
-      alert("Account deleted successfully.");
-    } catch (err) {
-      console.error("Failed to delete account:", err);
-      alert("Error deleting account. Please try again.");
+      const response = await api.delete("/delete");
+      if (response.status === 204) {
+        logout();
+        navigate("/login");
+      } else {
+        console.error("Unexpected response status:", response.status);
+        alert("Account deletion failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      alert("Something went wrong while deleting your account. Please try again later.");
     }
   };
 
