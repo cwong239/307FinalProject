@@ -70,7 +70,7 @@ function LoginPage() {
         </form>
         {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
         <p className="auth-switch">
-          Don't have an account? <a href="/signup">Sign Up</a>
+          Don&#39;t have an account? <a href="/signup">Sign Up</a>
         </p>
       </motion.div>
       <footer className="footer">

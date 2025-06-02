@@ -29,10 +29,11 @@ function ErrorStatusMessage({ statusMessage }) {
 }
 
 function ImagesPage() {
-  const storedToken = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
   const [errorStatusMessage, setErrorStatusMessage] = useState("");
+
+  const storedToken = localStorage.getItem("token");
 
   if (!storedToken) {
     window.location.href = "/login";
@@ -51,10 +52,11 @@ function ImagesPage() {
         });
 
         switch (response.status) {
-          case 200:
+          case 200: {
             const data = await response.json();
             setFiles(data);
             break;
+          }
           case 401:
             window.location.href = "/login";
             break;
@@ -89,9 +91,10 @@ function ImagesPage() {
       });
 
       switch (response.status) {
-        case 200:
+        case 200: {
           const blob = await response.blob();
           return URL.createObjectURL(blob);
+        }
         case 401:
           window.location.href = "/login";
           return null;

@@ -31,13 +31,6 @@ function ErrorStatusMessage({ statusMessage }) {
 }
 
 function EditPage() {
-  const storedToken = localStorage.getItem("token");
-
-  if (!storedToken) {
-    window.location.href = "/login";
-    return null;
-  }
-
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
@@ -51,6 +44,13 @@ function EditPage() {
   const [opacity, setOpacity] = useState(1);
   const [grayscale, setGrayscale] = useState(false);
   const [removeBg, setRemoveBg] = useState(false);
+
+  const storedToken = localStorage.getItem("token");
+
+  if (!storedToken) {
+    window.location.href = "/login";
+    return null;
+  }
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -139,7 +139,7 @@ function EditPage() {
       });
 
       switch (response.status) {
-        case 200:
+        case 200: {
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const temp = document.createElement("a");
@@ -150,6 +150,7 @@ function EditPage() {
           temp.remove();
           window.URL.revokeObjectURL(url);
           return;
+        }
         case 401:
           window.location.href = "/login";
           return;
