@@ -15,7 +15,7 @@ function SignupPage() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/register", {
+      const response = await api.post("/auth/register", {
         username,
         password,
       });
