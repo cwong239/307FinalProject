@@ -96,10 +96,11 @@ function EditPage() {
       });
 
       switch (response.status) {
-        case 201:
+        case 201:{
           const data = await response.json();
           setProcessedImage(data.filename);
           return;
+        }
         case 400:
           setErrorStatusMessage("Bad request.");
           return;
