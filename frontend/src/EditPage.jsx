@@ -5,6 +5,8 @@ import Slider from "./components/Slider";
 import ToggleButton from "./components/ToggleButton";
 import "./style.css";
 
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+
 function ErrorStatusMessage({ statusMessage }) {
   return (
     <>
@@ -87,7 +89,8 @@ function EditPage() {
     formData.append("remove_bg", removeBg);
 
     try {
-      const response = await fetch("http://localhost:5000/image", {
+      //const response = await fetch("http://localhost:5000/image", {
+      const response = await fetch(`${azure_api}/image`, {
         method: "POST",
         body: formData,
         headers: {
@@ -127,7 +130,8 @@ function EditPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+      //const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+      const response = await fetch(`${azure_api}/image/${processedImage}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${storedToken}`,
