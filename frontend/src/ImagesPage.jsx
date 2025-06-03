@@ -14,10 +14,14 @@ function ErrorStatusMessage({ statusMessage }) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <h1>Status Message</h1>
-        <p style={{ fontSize: "1.2rem", marginTop: "1rem", color: "#b22222" }}>
+        <p
+          style={{
+            fontSize: "1.2rem",
+            marginTop: "1rem",
+            color: "#b22222"
+          }}>
           {statusMessage || "An error occurred."}
         </p>
       </motion.div>
@@ -31,7 +35,8 @@ function ErrorStatusMessage({ statusMessage }) {
 function ImagesPage() {
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
-  const [errorStatusMessage, setErrorStatusMessage] = useState("");
+  const [errorStatusMessage, setErrorStatusMessage] =
+    useState("");
   const storedToken = localStorage.getItem("token");
 
   // Redirect to login if token is missing
@@ -49,8 +54,8 @@ function ImagesPage() {
         const response = await fetch(`${azure_api}/image`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
+            Authorization: `Bearer ${storedToken}`
+          }
         });
 
         switch (response.status) {
@@ -80,12 +85,15 @@ function ImagesPage() {
   const downloadImage = useCallback(
     async (filename) => {
       try {
-        const response = await fetch(`${azure_api}/image/${filename}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
+        const response = await fetch(
+          `${azure_api}/image/${filename}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${storedToken}`
+            }
+          }
+        );
 
         switch (response.status) {
           case 200: {
@@ -96,21 +104,29 @@ function ImagesPage() {
             window.location.href = "/login";
             return null;
           case 403:
-            setErrorStatusMessage(`Access denied to image: ${filename}`);
+            setErrorStatusMessage(
+              `Access denied to image: ${filename}`
+            );
             return null;
           case 404:
-            setErrorStatusMessage(`Image not found: ${filename}`);
+            setErrorStatusMessage(
+              `Image not found: ${filename}`
+            );
             return null;
           case 400:
             setErrorStatusMessage("Bad request.");
             return null;
           default:
-            setErrorStatusMessage("Server error occurred while downloading image.");
+            setErrorStatusMessage(
+              "Server error occurred while downloading image."
+            );
             return null;
         }
       } catch (error) {
         console.error(`Error downloading ${filename}:`, error);
-        setErrorStatusMessage("An unexpected error occurred while downloading.");
+        setErrorStatusMessage(
+          "An unexpected error occurred while downloading."
+        );
         return null;
       }
     },
@@ -142,7 +158,9 @@ function ImagesPage() {
   };
 
   if (errorStatusMessage) {
-    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+    return (
+      <ErrorStatusMessage statusMessage={errorStatusMessage} />
+    );
   }
 
   return (
@@ -153,8 +171,7 @@ function ImagesPage() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
           {files.map((file, index) => (
@@ -166,20 +183,25 @@ function ImagesPage() {
                   className="gallery-image"
                 />
               ) : (
-                <div className="image-placeholder">Loading...</div>
+                <div className="image-placeholder">
+                  Loading...
+                </div>
               )}
               <div className="file-info">
                 <p>
                   <strong>Name:</strong> {file.filename}
                 </p>
                 <p>
-                  <strong>Uploaded:</strong> {convertTimestampToDate(file.time)}
+                  <strong>Uploaded:</strong>{" "}
+                  {convertTimestampToDate(file.time)}
                 </p>
               </div>
               <button
                 className="download-button"
                 onClick={async () => {
-                  const downloadUrl = await downloadImage(file.filename);
+                  const downloadUrl = await downloadImage(
+                    file.filename
+                  );
                   if (downloadUrl) {
                     const link = document.createElement("a");
                     link.href = downloadUrl;
@@ -189,8 +211,7 @@ function ImagesPage() {
                     document.body.removeChild(link);
                     URL.revokeObjectURL(downloadUrl);
                   }
-                }}
-              >
+                }}>
                 Download
               </button>
             </div>
