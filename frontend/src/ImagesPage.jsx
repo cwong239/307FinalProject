@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
-const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net";
 
 function ErrorStatusMessage({ statusMessage }) {
   return (
@@ -32,18 +32,20 @@ function ImagesPage() {
   const [files, setFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
   const [errorStatusMessage, setErrorStatusMessage] = useState("");
-
   const storedToken = localStorage.getItem("token");
 
-  if (!storedToken) {
-    window.location.href = "/login";
-    return null;
-  }
+  // Redirect to login if token is missing
+  useEffect(() => {
+    if (!storedToken) {
+      window.location.href = "/login";
+    }
+  }, [storedToken]);
 
   useEffect(() => {
+    if (!storedToken) return;
+
     const fetchFiles = async () => {
       try {
-        //const response = await fetch("http://localhost:5000/image", {
         const response = await fetch(`${azure_api}/image`, {
           method: "GET",
           headers: {
@@ -71,63 +73,59 @@ function ImagesPage() {
         setFiles([]);
       }
     };
+
     fetchFiles();
   }, [storedToken]);
 
-  const convertTimestampToDate = (ts) => {
-    if (!ts) return "";
-    const date = new Date(ts * 1000);
-    return date.toLocaleString();
-  };
+  const downloadImage = useCallback(
+    async (filename) => {
+      try {
+        const response = await fetch(`${azure_api}/image/${filename}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
 
-  const downloadImage = async (filename) => {
-    try {
-      //const response = await fetch(`http://localhost:5000/image/${filename}`, {
-      const response = await fetch(`${azure_api}/image/${filename}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
-      });
-
-      switch (response.status) {
-        case 200: {
-          const blob = await response.blob();
-          return URL.createObjectURL(blob);
+        switch (response.status) {
+          case 200: {
+            const blob = await response.blob();
+            return URL.createObjectURL(blob);
+          }
+          case 401:
+            window.location.href = "/login";
+            return null;
+          case 403:
+            setErrorStatusMessage(`Access denied to image: ${filename}`);
+            return null;
+          case 404:
+            setErrorStatusMessage(`Image not found: ${filename}`);
+            return null;
+          case 400:
+            setErrorStatusMessage("Bad request.");
+            return null;
+          default:
+            setErrorStatusMessage("Server error occurred while downloading image.");
+            return null;
         }
-        case 401:
-          window.location.href = "/login";
-          return null;
-        case 403:
-          setErrorStatusMessage(`Access denied to image: ${filename}`);
-          return null;
-        case 404:
-          setErrorStatusMessage(`Image not found: ${filename}`);
-          return null;
-        case 400:
-          setErrorStatusMessage("Bad request.");
-          return null;
-        default:
-          setErrorStatusMessage("Server error occurred while downloading image.");
-          return null;
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        setErrorStatusMessage("An unexpected error occurred while downloading.");
+        return null;
       }
-    } catch (error) {
-      console.error(`Error downloading ${filename}:`, error);
-      setErrorStatusMessage("An unexpected error occurred while downloading.");
-      return null;
-    }
-  };
+    },
+    [storedToken]
+  );
 
-  const fetchAndStoreImage = async (filename) => {
-    const url = await downloadImage(filename);
-    if (url) {
-      setImageUrls((prev) => ({ ...prev, [filename]: url }));
-    }
-  };
-
-  if (errorStatusMessage) {
-    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
-  }
+  const fetchAndStoreImage = useCallback(
+    async (filename) => {
+      const url = await downloadImage(filename);
+      if (url) {
+        setImageUrls((prev) => ({ ...prev, [filename]: url }));
+      }
+    },
+    [downloadImage]
+  );
 
   useEffect(() => {
     files.forEach((file) => {
@@ -135,7 +133,17 @@ function ImagesPage() {
         fetchAndStoreImage(file.filename);
       }
     });
-  }, [files, imageUrls, errorStatusMessage]);
+  }, [files, imageUrls, fetchAndStoreImage]);
+
+  const convertTimestampToDate = (ts) => {
+    if (!ts) return "";
+    const date = new Date(ts * 1000);
+    return date.toLocaleString();
+  };
+
+  if (errorStatusMessage) {
+    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+  }
 
   return (
     <>
@@ -168,7 +176,6 @@ function ImagesPage() {
                   <strong>Uploaded:</strong> {convertTimestampToDate(file.time)}
                 </p>
               </div>
-
               <button
                 className="download-button"
                 onClick={async () => {
