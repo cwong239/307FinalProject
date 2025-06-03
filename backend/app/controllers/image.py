@@ -71,6 +71,7 @@ def process_image_controller():
     opacity = request.form.get("opacity", default=1.0, type=float)
     remove_bg = request.form.get("remove_bg", default=0, type=int)
 
+
     if "image" not in request.files:
         return HTTPResponse(400).error("No image file provided.").send()
 
