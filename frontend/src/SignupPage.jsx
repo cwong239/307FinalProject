@@ -17,7 +17,7 @@ function SignupPage() {
     try {
       const response = await api.post("/auth/register", {
         username,
-        password,
+        password
       });
 
       if (response.status === 201 || response.status === 200) {
@@ -39,8 +39,7 @@ function SignupPage() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <h2>Sign Up</h2>
         <form className="auth-form" onSubmit={handleSignup}>
           <input
@@ -59,7 +58,11 @@ function SignupPage() {
           />
           <MagneticButton type="submit">Sign Up</MagneticButton>
         </form>
-        {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
+        {error && (
+          <p style={{ color: "red", marginTop: "1rem" }}>
+            {error}
+          </p>
+        )}
         <p className="auth-switch">
           Already have an account? <a href="/login">Login</a>
         </p>

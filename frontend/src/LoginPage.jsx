@@ -17,16 +17,18 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/auth/login", { username, password });
+      const response = await api.post("/auth/login", {
+        username,
+        password
+      });
 
       if (response.data.token) {
-        const user = {username};
+        const user = { username };
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(user));
 
         // Pass token to login so axios headers are updated
         login(user, response.data.token);
-
 
         // Redirect after login
         navigate("/");
@@ -48,8 +50,7 @@ function LoginPage() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <h2>Login</h2>
         <form className="auth-form" onSubmit={handleLogin}>
           <input
@@ -68,9 +69,14 @@ function LoginPage() {
           />
           <MagneticButton type="submit">Login</MagneticButton>
         </form>
-        {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
+        {error && (
+          <p style={{ color: "red", marginTop: "1rem" }}>
+            {error}
+          </p>
+        )}
         <p className="auth-switch">
-          Don&#39;t have an account? <a href="/signup">Sign Up</a>
+          Don&#39;t have an account?{" "}
+          <a href="/signup">Sign Up</a>
         </p>
       </motion.div>
       <footer className="footer">

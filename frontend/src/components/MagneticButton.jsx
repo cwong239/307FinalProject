@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import "./MagneticButton.css";
 
-const MagneticButton = ({ children, type = "button", onClick }) => {
+const MagneticButton = ({
+  children,
+  type = "button",
+  onClick
+}) => {
   const ref = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -23,8 +27,7 @@ const MagneticButton = ({ children, type = "button", onClick }) => {
       type={type}
       onClick={onClick}
       onMouseMove={handleMouseMove}
-      onMouseLeave={reset}
-    >
+      onMouseLeave={reset}>
       {children}
     </button>
   );

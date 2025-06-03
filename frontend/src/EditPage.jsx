@@ -5,7 +5,8 @@ import Slider from "./components/Slider";
 import ToggleButton from "./components/ToggleButton";
 import "./style.css";
 
-const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net"
+const azure_api =
+  "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net";
 
 function ErrorStatusMessage({ statusMessage }) {
   return (
@@ -16,10 +17,14 @@ function ErrorStatusMessage({ statusMessage }) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <h1>Status Message</h1>
-        <p style={{ fontSize: "1.2rem", marginTop: "1rem", color: "#b22222" }}>
+        <p
+          style={{
+            fontSize: "1.2rem",
+            marginTop: "1rem",
+            color: "#b22222"
+          }}>
           {statusMessage || "An error occurred."}
         </p>
       </motion.div>
@@ -34,7 +39,8 @@ function EditPage() {
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
-  const [errorStatusMessage, setErrorStatusMessage] = useState("");
+  const [errorStatusMessage, setErrorStatusMessage] =
+    useState("");
   const fileInputRef = useRef();
 
   // states for image parameters
@@ -94,12 +100,12 @@ function EditPage() {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
+          Authorization: `Bearer ${storedToken}`
+        }
       });
 
       switch (response.status) {
-        case 201:{
+        case 201: {
           const data = await response.json();
           setProcessedImage(data.filename);
           return;
@@ -131,12 +137,15 @@ function EditPage() {
 
     try {
       //const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
-      const response = await fetch(`${azure_api}/image/${processedImage}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
-      });
+      const response = await fetch(
+        `${azure_api}/image/${processedImage}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${storedToken}`
+          }
+        }
+      );
 
       switch (response.status) {
         case 200: {
@@ -164,7 +173,9 @@ function EditPage() {
           setErrorStatusMessage("Bad request.");
           return;
         default:
-          setErrorStatusMessage("Server error occurred while downloading image.");
+          setErrorStatusMessage(
+            "Server error occurred while downloading image."
+          );
           return;
       }
     } catch (error) {
@@ -174,7 +185,9 @@ function EditPage() {
   };
 
   if (errorStatusMessage) {
-    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+    return (
+      <ErrorStatusMessage statusMessage={errorStatusMessage} />
+    );
   }
 
   return (
@@ -185,19 +198,45 @@ function EditPage() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <motion.div
           className="edit-subcontainer"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
+          transition={{ delay: 0.2, duration: 0.5 }}>
           <div className="edit-slider-menu">
-            <Slider name="Brightness" value={brightness} min={-100} max={100} step={1} onChange={setBrightness} />
-            <Slider name="Gamma" value={gamma} min={0.1} max={5} step={0.1} onChange={setGamma} />
-            <Slider name="Contrast" value={contrast} min={0.1} max={5} step={0.1} onChange={setContrast} />
-            <Slider name="Opacity" value={opacity} min={0} max={1} step={0.01} onChange={setOpacity} />
+            <Slider
+              name="Brightness"
+              value={brightness}
+              min={-100}
+              max={100}
+              step={1}
+              onChange={setBrightness}
+            />
+            <Slider
+              name="Gamma"
+              value={gamma}
+              min={0.1}
+              max={5}
+              step={0.1}
+              onChange={setGamma}
+            />
+            <Slider
+              name="Contrast"
+              value={contrast}
+              min={0.1}
+              max={5}
+              step={0.1}
+              onChange={setContrast}
+            />
+            <Slider
+              name="Opacity"
+              value={opacity}
+              min={0}
+              max={1}
+              step={0.01}
+              onChange={setOpacity}
+            />
           </div>
 
           <motion.div
@@ -207,8 +246,7 @@ function EditPage() {
             onDragOver={(e) => e.preventDefault()}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
+            transition={{ type: "spring", stiffness: 200 }}>
             {imageSrc ? (
               <img src={imageSrc} alt="uploaded" />
             ) : (
@@ -228,15 +266,26 @@ function EditPage() {
           className="edit-subcontainer-toggle-buttons"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-        >
-          <ToggleButton name="Gray Scale" value={grayscale} onToggle={setGrayscale} />
-          <ToggleButton name="Background Removal" value={removeBg} onToggle={setRemoveBg} />
-          <button className="submit-button" onClick={handleSubmit}>
+          transition={{ delay: 0.3, duration: 0.6 }}>
+          <ToggleButton
+            name="Gray Scale"
+            value={grayscale}
+            onToggle={setGrayscale}
+          />
+          <ToggleButton
+            name="Background Removal"
+            value={removeBg}
+            onToggle={setRemoveBg}
+          />
+          <button
+            className="submit-button"
+            onClick={handleSubmit}>
             Submit
           </button>
           {imageFile && processedImage && (
-            <button className="submit-button" onClick={handleDownload}>
+            <button
+              className="submit-button"
+              onClick={handleDownload}>
               Download Image
             </button>
           )}
