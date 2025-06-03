@@ -53,6 +53,8 @@ def create_app():
     # Store the container client in the app config for later use
     app.config["AZURE_CONTAINER_CLIENT"] = container_client
 
+    print(f"Port env {os.environ.get('PORT')}")
+
     ######################################################
 
     jwt.init_app(app)
