@@ -5,7 +5,7 @@ const azure_api =
 
 const api = axios.create({
   // baseURL: "http://localhost:5000/", // Adjust the baseURL as per your backend configuration
-  baseURL: `${azure_api}:5000/`, // Adjust the baseURL as per your backend configuration
+  baseURL: `${azure_api}/`, // Adjust the baseURL as per your backend configuration
   withCredentials: true // Include cookies in requests if your backend uses them
 });
 
