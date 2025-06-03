@@ -10,8 +10,7 @@ function Homepage() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <Navbar />
         <div className="homepage-content">
           <h1>FotoMagic</h1>

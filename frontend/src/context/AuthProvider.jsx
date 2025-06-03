@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect } from "react";
-import api from "./api";
-
-export const AuthContext = createContext();
+import { useState, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
+import api from "../api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -14,7 +13,8 @@ export const AuthProvider = ({ children }) => {
     if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
-      api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
+      api.defaults.headers.common["Authorization"] =
+        `Bearer ${storedToken}`;
     }
   }, []);
 
@@ -23,7 +23,8 @@ export const AuthProvider = ({ children }) => {
     setToken(token);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] =
+      `Bearer ${token}`;
   };
 
   const logout = () => {
@@ -35,7 +36,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
