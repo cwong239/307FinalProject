@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
-const azure_api =
-  "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net";
+const azure_api = "https://307-final-project-afa0h6ardsdtbfdh.westus3-01.azurewebsites.net";
 
 function ErrorStatusMessage({ statusMessage }) {
   return (
