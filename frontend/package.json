@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "lint": "npx eslint ."
+    "lint": "npx eslint . && npx prettier --check .",
+    "test": "echo \"Error: no test specified\""
   },
   "author": "",
   "license": "ISC",

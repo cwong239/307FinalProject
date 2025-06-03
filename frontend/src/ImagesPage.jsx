@@ -1,81 +1,149 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
 
-function ImagesPage() {
-  const storedToken = localStorage.getItem("token");
-  const [filenames, setFilenames] = useState([]);
+const azure_api = "https://fotomagic-cudga7e2gcgvgzfv.westus-01.azurewebsites.net";
 
-  if (!storedToken) {
-    return (
-      <>
-        <Navbar />
-        <motion.div
-          className="gallery-container"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1>Not logged in</h1>
-        </motion.div>
-        <footer className="footer">
-          <p>&copy; 2025 FotoMagic. All rights reserved.</p>
-        </footer>
-      </>
-    );
-  }
+function ErrorStatusMessage({ statusMessage }) {
+  return (
+    <>
+      <Navbar />
+      <motion.div
+        className="gallery-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1>Status Message</h1>
+        <p style={{ fontSize: "1.2rem", marginTop: "1rem", color: "#b22222" }}>
+          {statusMessage || "An error occurred."}
+        </p>
+      </motion.div>
+      <footer className="footer">
+        <p>&copy; 2025 FotoMagic. All rights reserved.</p>
+      </footer>
+    </>
+  );
+}
+
+function ImagesPage() {
+  const [files, setFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState({});
+  const [errorStatusMessage, setErrorStatusMessage] = useState("");
+  const storedToken = localStorage.getItem("token");
+
+  // Redirect to login if token is missing
+  useEffect(() => {
+    if (!storedToken) {
+      window.location.href = "/login";
+    }
+  }, [storedToken]);
 
   useEffect(() => {
-    const fetchFilenames = async () => {
+    if (!storedToken) return;
+
+    const fetchFiles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/image", {
+        const response = await fetch(`${azure_api}/image`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch filenames");
+        switch (response.status) {
+          case 200: {
+            const data = await response.json();
+            setFiles(data);
+            break;
+          }
+          case 401:
+            window.location.href = "/login";
+            break;
+          default:
+            setErrorStatusMessage("Failed to fetch file list.");
+            setFiles([]);
+            break;
         }
-
-        const data = await response.json();
-        setFilenames(data);
       } catch (error) {
-        console.error("Error fetching filenames:", error);
-        setFilenames([]);
+        console.error("Error fetching file names:", error);
+        setErrorStatusMessage("An unexpected error occurred.");
+        setFiles([]);
       }
     };
 
-    fetchFilenames();
+    fetchFiles();
   }, [storedToken]);
 
-  const downloadImage = async (filename) => {
-    try {
-      const response = await fetch(`http://localhost:5000/image/${filename}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
-      });
-      if (!response.ok) throw new Error("Failed to download image");
+  const downloadImage = useCallback(
+    async (filename) => {
+      try {
+        const response = await fetch(`${azure_api}/image/${filename}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+        switch (response.status) {
+          case 200: {
+            const blob = await response.blob();
+            return URL.createObjectURL(blob);
+          }
+          case 401:
+            window.location.href = "/login";
+            return null;
+          case 403:
+            setErrorStatusMessage(`Access denied to image: ${filename}`);
+            return null;
+          case 404:
+            setErrorStatusMessage(`Image not found: ${filename}`);
+            return null;
+          case 400:
+            setErrorStatusMessage("Bad request.");
+            return null;
+          default:
+            setErrorStatusMessage("Server error occurred while downloading image.");
+            return null;
+        }
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        setErrorStatusMessage("An unexpected error occurred while downloading.");
+        return null;
+      }
+    },
+    [storedToken]
+  );
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error(`Error downloading ${filename}:`, error);
-    }
+  const fetchAndStoreImage = useCallback(
+    async (filename) => {
+      const url = await downloadImage(filename);
+      if (url) {
+        setImageUrls((prev) => ({ ...prev, [filename]: url }));
+      }
+    },
+    [downloadImage]
+  );
+
+  useEffect(() => {
+    files.forEach((file) => {
+      if (!imageUrls[file.filename]) {
+        fetchAndStoreImage(file.filename);
+      }
+    });
+  }, [files, imageUrls, fetchAndStoreImage]);
+
+  const convertTimestampToDate = (ts) => {
+    if (!ts) return "";
+    const date = new Date(ts * 1000);
+    return date.toLocaleString();
   };
+
+  if (errorStatusMessage) {
+    return <ErrorStatusMessage statusMessage={errorStatusMessage} />;
+  }
 
   return (
     <>
@@ -89,29 +157,45 @@ function ImagesPage() {
       >
         <h1>Photo Gallery</h1>
         <div className="gallery-grid">
-          {filenames.map((filename, index) => (
+          {files.map((file, index) => (
             <div className="gallery-item" key={index}>
-              <img
-                src={`http://localhost:5000/image/${filename}`}
-                alt={filename}
-                className="gallery-image"
-              />
+              {imageUrls[file.filename] ? (
+                <img
+                  src={imageUrls[file.filename]}
+                  alt={file.filename}
+                  className="gallery-image"
+                />
+              ) : (
+                <div className="image-placeholder">Loading...</div>
+              )}
+              <div className="file-info">
+                <p>
+                  <strong>Name:</strong> {file.filename}
+                </p>
+                <p>
+                  <strong>Uploaded:</strong> {convertTimestampToDate(file.time)}
+                </p>
+              </div>
               <button
-                onClick={() => downloadImage(filename)}
                 className="download-button"
+                onClick={async () => {
+                  const downloadUrl = await downloadImage(file.filename);
+                  if (downloadUrl) {
+                    const link = document.createElement("a");
+                    link.href = downloadUrl;
+                    link.download = file.filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(downloadUrl);
+                  }
+                }}
               >
                 Download
               </button>
             </div>
           ))}
         </div>
-        <audio controls>
-          <source
-            src="/placeHolderImages/VeryImportantDoNotDelete.mp3"
-            type="audio/mpeg"
-          />
-          Your browser does not support the audio element.
-        </audio>
       </motion.div>
       <footer className="footer">
         <p>&copy; 2025 FotoMagic. All rights reserved.</p>

@@ -226,7 +226,7 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   justify-items: center;
 }
@@ -247,18 +247,41 @@
 }
 
 .download-button {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #0077ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+
+  width: 160px;
+  height: 80px;
+
+  padding: 0.35rem 0.25rem;
+  margin: 0.5rem auto 0;
+
+  background: linear-gradient(135deg, #4f46e5, #6d28d9);
   color: white;
-  border-radius: 5px;
-  text-decoration: none;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 .download-button:hover {
-  background: #005fd1;
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
 }
+
+.download-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
+}
+
 
 /* Edit Page */
 .edit-container {
@@ -337,6 +360,12 @@
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
+.slider-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #ffffff, #f6f6f6);
+}
+
 .slider-name {
   font-weight: bold;
   margin-bottom: 0.5rem;
@@ -358,6 +387,12 @@
   margin: 0.5rem;
   width: 160px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #ffffff, #f6f6f6);
 }
 
 .toggle-name {
@@ -383,6 +418,19 @@
 
 .toggle-button.false {
   background-color: #dc3545;
+}
+
+.toggle-button.true:hover {
+  background-color: #218838; /* slightly darker green */
+}
+
+.toggle-button.false:hover {
+  background-color: #c82333; /* slightly darker red */
+}
+
+.toggle-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Extras */
@@ -419,4 +467,41 @@ body {
 
 .magnetic-button:hover {
   background-color: #9013fe;
+}
+
+/* Submit Button for Edit*/
+.submit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+
+  width: 160px;
+  height: 80px; /* approx height of toggle-container with padding */
+
+  padding: 0.35rem 0.25rem;
+  margin: 0.5rem;
+
+  background: linear-gradient(135deg, #4f46e5, #6d28d9);
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
 }
