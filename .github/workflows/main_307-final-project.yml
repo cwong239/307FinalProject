@@ -80,5 +80,5 @@ jobs:
         with:
           app-name: '307-final-project'
           slot-name: 'Production'
-          package: backend/
+          package: .
           
