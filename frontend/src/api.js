@@ -1,11 +1,11 @@
 import axios from "axios";
+import CD_DOMAIN from "./azure";
 
-const azure_api =
-  "https://307-final-project-afa0h6ardsdtbfdh.westus3-01.azurewebsites.net";
+const azure_api = CD_DOMAIN;
 
 const api = axios.create({
   // baseURL: "http://localhost:5000/", // Adjust the baseURL as per your backend configuration
-  baseURL: `${azure_api}:5000/`, // Adjust the baseURL as per your backend configuration
+  baseURL: `${azure_api}/`, // Adjust the baseURL as per your backend configuration
   withCredentials: true // Include cookies in requests if your backend uses them
 });
 
