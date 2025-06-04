@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "../style.css";
 
-function ToggleButton({ name = "Toggle", value, onToggle, ...rest}) {
+function ToggleButton({
+  name = "Toggle",
+  value,
+  onToggle,
+  ...rest
+}) {
   const handleToggle = () => {
     if (onToggle) onToggle(value === 1 ? 0 : 1);
   };
