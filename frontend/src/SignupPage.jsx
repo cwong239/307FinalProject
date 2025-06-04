@@ -43,6 +43,7 @@ function SignupPage() {
         <h2>Sign Up</h2>
         <form className="auth-form" onSubmit={handleSignup}>
           <input
+            data-cy="username"
             type="text"
             placeholder="Username"
             value={username}
@@ -50,13 +51,14 @@ function SignupPage() {
             required
           />
           <input
+            data-cy="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <MagneticButton type="submit">Sign Up</MagneticButton>
+          <MagneticButton data-cy="signup-button" type="submit">Sign Up</MagneticButton>
         </form>
         {error && (
           <p style={{ color: "red", marginTop: "1rem" }}>

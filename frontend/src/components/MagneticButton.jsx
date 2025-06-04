@@ -4,7 +4,8 @@ import "./MagneticButton.css";
 const MagneticButton = ({
   children,
   type = "button",
-  onClick
+  onClick,
+  ...rest
 }) => {
   const ref = useRef(null);
 
@@ -27,7 +28,8 @@ const MagneticButton = ({
       type={type}
       onClick={onClick}
       onMouseMove={handleMouseMove}
-      onMouseLeave={reset}>
+      onMouseLeave={reset}
+      {...rest}>
       {children}
     </button>
   );

@@ -253,6 +253,7 @@ function EditPage() {
               <p>Click or drag an image here to upload</p>
             )}
             <input
+              data-cy="image-upload"
               type="file"
               accept="image/*"
               ref={fileInputRef}

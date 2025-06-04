@@ -54,6 +54,7 @@ function LoginPage() {
         <h2>Login</h2>
         <form className="auth-form" onSubmit={handleLogin}>
           <input
+            data-cy="username"
             type="text"
             placeholder="Username"
             value={username}
@@ -61,13 +62,14 @@ function LoginPage() {
             required
           />
           <input
+            data-cy="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <MagneticButton type="submit">Login</MagneticButton>
+          <MagneticButton data-cy="login-button" type="submit">Login</MagneticButton>
         </form>
         {error && (
           <p style={{ color: "red", marginTop: "1rem" }}>
