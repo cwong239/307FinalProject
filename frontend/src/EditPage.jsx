@@ -292,6 +292,7 @@ function EditPage() {
           </button>
           {imageFile && processedImage && (
             <button
+              data-cy="download"
               className="submit-button"
               onClick={handleDownload}>
               Download Image
