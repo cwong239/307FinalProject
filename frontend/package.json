@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "lint": "npx eslint . && npx prettier --check .",
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "cy:open": "cypress open"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.26.0",
     "@vitejs/plugin-react": "^4.4.1",
+    "cypress": "^14.4.1",
     "eslint": "^9.26.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -28,10 +30,10 @@
   },
   "dependencies": {
     "axios": "^1.9.0",
+    "framer-motion": "^12.12.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^6.30.0",
-    "framer-motion": "^12.12.1",
-    "react-intersection-observer": "^9.4.0"
+    "react-intersection-observer": "^9.4.0",
+    "react-router-dom": "^6.30.0"
   }
 }
