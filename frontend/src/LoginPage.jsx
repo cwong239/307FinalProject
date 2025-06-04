@@ -69,7 +69,9 @@ function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <MagneticButton data-cy="login-button" type="submit">Login</MagneticButton>
+          <MagneticButton data-cy="login-button" type="submit">
+            Login
+          </MagneticButton>
         </form>
         {error && (
           <p style={{ color: "red", marginTop: "1rem" }}>
