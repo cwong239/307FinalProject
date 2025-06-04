@@ -7,7 +7,8 @@ function Slider({
   max = 100,
   step = 1,
   value,
-  onChange
+  onChange,
+  ...rest
 }) {
   const handleChange = (event) => {
     if (onChange) onChange(event.target.value);
@@ -25,6 +26,7 @@ function Slider({
         step={step}
         value={value}
         onChange={handleChange}
+        {...rest}
       />
     </div>
   );

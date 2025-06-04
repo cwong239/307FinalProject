@@ -20,8 +20,8 @@ describe('The Home Page', () => {
 //   }); 
 // })
 
-describe("The Login Page", () => { 
-  it("Try to login as user", () => { 
+describe("The Login and Edit Page", () => { 
+  it("Try to login as user and upload test image", () => { 
     const testdata = { 
       name: "john", 
       password: "john" 
@@ -31,14 +31,9 @@ describe("The Login Page", () => {
     cy.get('input[data-cy="password"]').type(testdata.password); 
     cy.get('[data-cy="login-button"]').click();
     cy.url().should('eq', `${APP_DOMAIN}/`); 
-  }); 
-})
 
-
-describe('The Edit Page', () => {
-  it('Try to upload an image', () => {
     cy.visit(`${APP_DOMAIN}/edit`)
 
-     cy.get('[data-cy="image-upload"]').selectFile('cypress/fixtures/test_image.jpg');
-  })
+    cy.get('[data-cy="image-upload"]').selectFile('cypress/fixtures/test_image.jpg');
+  }); 
 })

@@ -206,6 +206,7 @@ function EditPage() {
           transition={{ delay: 0.2, duration: 0.5 }}>
           <div className="edit-slider-menu">
             <Slider
+              data-cy="slider-brightness"
               name="Brightness"
               value={brightness}
               min={-100}
@@ -214,6 +215,7 @@ function EditPage() {
               onChange={setBrightness}
             />
             <Slider
+              data-cy="slider-gamma"
               name="Gamma"
               value={gamma}
               min={0.1}
@@ -222,6 +224,7 @@ function EditPage() {
               onChange={setGamma}
             />
             <Slider
+              data-cy="slider-contrast"
               name="Contrast"
               value={contrast}
               min={0.1}
@@ -230,6 +233,7 @@ function EditPage() {
               onChange={setContrast}
             />
             <Slider
+              data-cy="slider-opacity"
               name="Opacity"
               value={opacity}
               min={0}
@@ -269,16 +273,19 @@ function EditPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}>
           <ToggleButton
+            data-cy="toggle-grayscale"
             name="Gray Scale"
             value={grayscale}
             onToggle={setGrayscale}
           />
           <ToggleButton
+            data-cy="toggle-backgroundremoval"
             name="Background Removal"
             value={removeBg}
             onToggle={setRemoveBg}
           />
           <button
+            data-cy="submit"
             className="submit-button"
             onClick={handleSubmit}>
             Submit
