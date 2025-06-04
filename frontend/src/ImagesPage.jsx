@@ -2,9 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import "./style.css";
+import CD_DOMAIN from "./azure";
 
-const azure_api =
-  "https://307-final-project-afa0h6ardsdtbfdh.westus3-01.azurewebsites.net";
+const azure_api = CD_DOMAIN;
 
 function ErrorStatusMessage({ statusMessage }) {
   return (
