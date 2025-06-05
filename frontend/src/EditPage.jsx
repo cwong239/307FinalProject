@@ -284,12 +284,14 @@ function EditPage() {
             value={removeBg}
             onToggle={setRemoveBg}
           />
-          <button
-            data-cy="submit"
-            className="submit-button"
-            onClick={handleSubmit}>
-            Submit
-          </button>
+          {!(imageFile && processedImage) && (
+            <button
+              data-cy="submit"
+              className="submit-button"
+              onClick={handleSubmit}>
+              Submit
+            </button>
+          )}
           {imageFile && processedImage && (
             <button
               data-cy="download"
