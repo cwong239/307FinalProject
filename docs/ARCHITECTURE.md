@@ -7,12 +7,12 @@ Image Processing - OpenCV
 Database - Mongo
 File Storage - Azure
 
-
+General requests
 UI/UX <-> Client  < - - - - - > Backend API
 
+Upload image
+API -> Image Processing -> Azure, Mongo
 
-API -> Image Processing -> Azure
-                        -> Mongo
-
+Get image
 API <-> Mongo <-> Azure
 
