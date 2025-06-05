@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
-import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -12,7 +11,6 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -22,28 +20,34 @@ function SignupPage() {
         password
       });
 
-      if (response.data.token) {
+      const { token } = response.data;
+
+      if (token) {
         const user = { username };
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        login(user, response.data.token);
-
+        login(user, token);
         navigate("/");
-      } else if (response.status === 400) {
-        setError(
-          "Username and password must be at least 4 characters"
-        );
-      } else if (response.status === 409) {
-        setError("This username is already taken");
       } else {
-        setError("An unexpected error occured");
+        setError("An unexpected error occurred");
       }
     } catch (err) {
-      console.error("Signup error:", err);
-      setError("An unexpected error occurred");
+      if (err.response) {
+        if (err.response.status === 400) {
+          setError("Username and password must be at least 4 characters");
+        } else if (err.response.status === 409) {
+          setError("This username is already taken");
+        } else {
+          setError(`Signup failed: ${err.response.statusText}`);
+        }
+      } else {
+        console.error("Signup error:", err);
+        setError("Unable to connect to the server");
+      }
     }
   };
+
 
   return (
     <>
