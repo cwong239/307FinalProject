@@ -79,8 +79,8 @@
   margin-bottom: 0rem;
   color: #6a10f3;
   transition:
-  color 0.3s ease,
-  transform 0.3s ease;
+    color 0.3s ease,
+    transform 0.3s ease;
   cursor: pointer;
 }
 
