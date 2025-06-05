@@ -20,14 +20,24 @@ function SignupPage() {
         password
       });
 
-      if (response.status === 201 || response.status === 200) {
-        navigate("/login");
+      if (response.data.token) {
+        const user = { username };
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        login(user, response.data.token);
+
+        navigate("/");
+      } else if (response.status === 400) {
+        setError("Username and password must be at least 4 characters");
+      } else if (response.status === 409) {
+        setError("This username is already taken");
       } else {
-        setError("Unexpected response. Please try again.");
+        setError("An unexpected error occured");
       }
     } catch (err) {
       console.error("Signup error:", err);
-      setError("Signup failed. Please try again.");
+      setError("An unexpected error occurred");
     }
   };
 

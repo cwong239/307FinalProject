@@ -27,18 +27,19 @@ function LoginPage() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        // Pass token to login so axios headers are updated
         login(user, response.data.token);
 
-        // Redirect after login
         navigate("/");
+      } else if (response.status === 400) {
+        setError("Username and password must be at least 4 characters");
+      } else if (response.status === 401) {
+        setError("Invalid password");
       } else {
-        console.warn("Login succeeded but no token returned.");
-        setError("Login failed: no token received.");
+        setError("An unexpected error occured");
       }
     } catch (err) {
       console.error("Login error:", err);
-      setError("Invalid username or password");
+      setError("An unexpected error occurred");
     }
   };
 
