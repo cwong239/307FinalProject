@@ -1,5 +1,6 @@
 API Docs in backend/app
 
+## Stack
 UI/UX - React w HTML/CSS
 
 Client - React
@@ -12,13 +13,13 @@ Database - Mongo
 
 File Storage - Azure
 
-
-General requests
+## Relationships
+#### General requests
 UI/UX <-> Client  < - - - - - > Backend API
 
-Upload image
+#### Upload image
 API -> Image Processing -> Azure, Mongo
 
-Get image
+#### Get image
 API <-> Mongo <-> Azure
 
