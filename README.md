@@ -1,3 +1,21 @@
+# Project Vision:
+[Project Vision for this project](docs/PROJECTVISION.md)
+
+# UI Prototype:
+Listed here is the link to the Figma UI prototype for our website: https://www.figma.com/proto/T1hMRncK1jdkp7XhticoFF/CSC-307-Final-Project?node-id=1059-468490&p=f&t=BN05iJQwuJRAE7r8-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1059%3A468490
+
+# Architecture:
+[Architecture documentation for this project](docs/ARCHITECTURE.md)
+
+# Development Environment Setup:
+[Contribution guidelines for this project](docs/CONTRIBUTING.md)
+
+# Class (Data Model) UML Diagrams:
+
+# Testing:
+Cypress End-to-End testing was implemented, which can be run by entering the frontend folder by typing the command ``` cd frontend ```. Afterwords, by entering the command ``` npm run cy:open ``` will open the Cypress E2E testing application. Next please click the **E2E Testing** option 
+
+
 # TE4 Sequence Diagrams:
 **Note any block in the Database column if not explicitly mentioned as using Azure or Mongo DB, it is assumed to be Mongo DB**
 
