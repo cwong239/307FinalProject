@@ -95,8 +95,8 @@ function EditPage() {
     formData.append("remove_bg", removeBg);
 
     try {
-      //const response = await fetch("http://localhost:5000/image", {
-      const response = await fetch(`${azure_api}/image`, {
+      const response = await fetch("http://localhost:5000/image", {
+      //const response = await fetch(`${azure_api}/image`, {
         method: "POST",
         body: formData,
         headers: {
@@ -182,16 +182,47 @@ function EditPage() {
     }
 
     try {
-      if (imageSrc.startsWith("blob:")) {
-        const link = document.createElement("a");
-        link.href = imageSrc;
-        link.download = processedImage;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        return;
-      } else {
-        setErrorStatusMessage("Failed to download image.");
+      const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
+      //const response = await fetch(
+        //`${azure_api}/image/${processedImage}`,
+        //{
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${storedToken}`
+          }
+        }
+      );
+
+      switch (response.status) {
+        case 200: {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const temp = document.createElement("a");
+          temp.href = url;
+          temp.download = processedImage;
+          document.body.appendChild(temp);
+          temp.click();
+          temp.remove();
+          window.URL.revokeObjectURL(url);
+          return;
+        }
+        case 401:
+          window.location.href = "/login";
+          return;
+        case 403:
+          setErrorStatusMessage(`Access denied to image.`);
+          return;
+        case 404:
+          setErrorStatusMessage(`Image not found.`);
+          return;
+        case 400:
+          setErrorStatusMessage("Bad request.");
+          return;
+        default:
+          setErrorStatusMessage(
+            "Server error occurred while downloading image."
+          );
+          return;
       }
     } catch (error) {
       console.error(error);

@@ -52,7 +52,8 @@ function ImagesPage() {
 
     const fetchFiles = async () => {
       try {
-        const response = await fetch(`${azure_api}/image`, {
+        const response = await fetch("http://localhost:5000/image", {
+        //const response = await fetch(`${azure_api}/image`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${storedToken}`
@@ -86,9 +87,10 @@ function ImagesPage() {
   const downloadImage = useCallback(
     async (filename) => {
       try {
-        const response = await fetch(
-          `${azure_api}/image/${filename}`,
-          {
+        const response = await fetch(`http://localhost:5000/image/${filename}`, {
+        //const response = await fetch(
+          //`${azure_api}/image/${filename}`,
+          //{
             method: "GET",
             headers: {
               Authorization: `Bearer ${storedToken}`
