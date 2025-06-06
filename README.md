@@ -1,7 +1,7 @@
 # Fotomagic by the Brogrammers
 
 <p align="center">
-  <img src="../frontend/public/logo.png" alt="Fotomagic logo" width="300"/>
+  <img src="/frontend/public/logo.png" alt="Fotomagic logo" width="300"/>
 </p>
 
 Welcome, listed below is all the relevant documentation for the CSC 307 Final Project created by Minwoo Park, Vladimir Gupenko Shrey Shah, Zachary Hoffman Chris Wong. Each section has a link to their corresponding markdown document. 
