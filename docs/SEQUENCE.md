@@ -11,3 +11,5 @@
 
 ### Upload Image Diagram
 ![image](https://github.com/user-attachments/assets/875262e7-1b23-4bb5-b587-bc5fdaf04ce4)
+
+**© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**

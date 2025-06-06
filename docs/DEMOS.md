@@ -3,3 +3,5 @@
 Full Deployed Application Demo Link: https://youtu.be/qcPqslQKbzA
 
 Background Removal Localhost Demo Link: https://youtu.be/TVc5O5ABQbg
+
+**© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**

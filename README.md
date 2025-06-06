@@ -1,6 +1,10 @@
 # Fotomagic by the Brogrammers
 Welcome, listed below is all the relevant documentation for the CSC 307 Final Project created by Minwoo Park, Vladimir Gupenko Shrey Shah, Zachary Hoffman Chris Wong. Each section has a link to their corresponding markdown document. 
 
+The deployed website can be found through this link: **[FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/)**
+
+Due to Azure preventing everyone besides the Github repo owner to create a web app, a public fork was utilized for continuous integration (CI) and continuous deployment (CD). This fork is always up to date with the main branch of this repo and can be found through this link: **[Deployment Github](https://github.com/minpark830/csc-307-min-CD)**
+
 ## Project Vision:
 [Project vision for this project](docs/PROJECTVISION.md)
 
