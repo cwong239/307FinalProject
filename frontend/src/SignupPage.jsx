@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
-import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -12,7 +11,6 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -88,7 +86,7 @@ function SignupPage() {
           </p>
         )}
         <p className="auth-switch">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <a href="/login">Log In</a>
         </p>
       </motion.div>
       <footer className="footer">

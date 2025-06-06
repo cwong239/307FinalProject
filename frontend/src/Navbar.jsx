@@ -38,11 +38,13 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <img
-          src="/logo.png"
-          alt="FotoMagic Logo"
-          className="logo"
-        />
+        <Link to="/">
+          <img
+            src="/logo.png"
+            alt="FotoMagic Logo"
+            className="logo"
+          />
+        </Link>
         <ul>
           <li>
             <Link to="/">
@@ -53,25 +55,29 @@ function Navbar() {
             </Link>
           </li>
 
-          <li>
-            <Link to="/edit">
-              <span className="navbar-item">
-                <span className="material-icons">edit</span>
-                Edit
-              </span>
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/images">
-              <span className="navbar-item">
-                <span className="material-icons">
-                  photo_library
+          {user && (
+            <li>
+              <Link to="/edit">
+                <span className="navbar-item">
+                  <span className="material-icons">edit</span>
+                  Edit
                 </span>
-                Images
-              </span>
-            </Link>
-          </li>
+              </Link>
+            </li>
+          )}
+
+          {user && (
+            <li>
+              <Link to="/images">
+                <span className="navbar-item">
+                  <span className="material-icons">
+                    photo_library
+                  </span>
+                  Images
+                </span>
+              </Link>
+            </li>
+          )}
 
           <li>
             <Link to="/about">
@@ -115,12 +121,25 @@ function Navbar() {
             </button>
           </>
         ) : (
-          <Link to="/login" className="auth-link">
-            <span className="navbar-item">
-              <span className="material-icons">login</span>
-              Sign Up / Login
-            </span>
-          </Link>
+          <>
+          <ul>
+            <Link to="/login" className="auth-link">
+             <li>
+              <span className="navbar-item">
+                <span className="material-icons">login</span>
+                Login
+              </span> </li>
+            </Link>
+
+
+            <Link to="/signup" className="auth-link">
+            <li>
+              <span className="navbar-item">
+                Sign Up
+              </span></li>
+            </Link>
+          </ul>
+          </>
         )}
       </div>
     </nav>

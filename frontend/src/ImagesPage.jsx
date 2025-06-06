@@ -134,40 +134,6 @@ function ImagesPage() {
     [storedToken]
   );
 
-  const deleteImage = useCallback(
-    async (filename) => {
-      try {
-      const response = await fetch(`${azure_api}/image/${filename}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
-      });
-
-      switch (response.status) {
-        case 204:
-          setFiles((prev) => prev.filter((file) => file.filename !== filename));
-          setImageUrls((prev) => {
-            const updated = { ...prev };
-            delete updated[filename];
-            return updated;
-          });
-          break;
-        case 401:
-          window.location.href = "/login";
-          break;
-        default:
-          setErrorStatusMessage(`Failed to delete image: ${filename}`);
-          break;
-      }
-    } catch (error) {
-      console.error(`Error deleting ${filename}:`, error);
-      setErrorStatusMessage("An unexpected error occurred while deleting.");
-    }
-    },
-    [storedToken]
-  );
-
   const fetchAndStoreImage = useCallback(
     async (filename) => {
       const url = await downloadImage(filename);
@@ -248,16 +214,6 @@ function ImagesPage() {
                   }
                 }}>
                 Download
-              </button>
-              <button
-                className="download-button"
-                onClick={async () => {
-                  const confirmDelete = window.confirm(`Are you sure you want to delete ${file.filename}?`);
-                  if (confirmDelete) {
-                    deleteImage(file.filename);
-                  }
-                }}>
-                Delete
               </button>
             </div>
           ))}
