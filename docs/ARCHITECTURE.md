@@ -1,6 +1,6 @@
 # Architecture Documentation
 
-API Docs in backend/app
+The REST API Documentation can be found here: [backend/app](../backend/app/API-Docs.md)
 
 ## Stack
 UI/UX - React w HTML/CSS

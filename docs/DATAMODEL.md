@@ -1,4 +1,4 @@
-# UML Data Model
+# Class (Data Model) UML Diagrams
 
 ![TE5_Minwoo_Park](https://github.com/user-attachments/assets/cd1c6cef-9d6c-4edc-9ed8-fbc0265d81c3)
 

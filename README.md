@@ -26,7 +26,7 @@ Due to Azure preventing everyone besides the Github repo owner to create a web a
 ## Video Demos:
 [Video Demos for this project](docs/DEMOS.md)
 
-## TE4 Sequence Diagrams:
+## UML Sequence Diagrams:
 [Sequence Diagrams for this project](docs/SEQUENCE.md)
 
 **© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**
