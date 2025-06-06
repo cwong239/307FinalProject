@@ -162,7 +162,7 @@ function ImagesPage() {
       }
     } catch (error) {
       console.error(`Error deleting ${filename}:`, error);
-      setErrorStatusMessage("An unexpected error occurred while deleting.");Add commentMore actions
+      setErrorStatusMessage("An unexpected error occurred while deleting.");
     }
     },
     [storedToken]
