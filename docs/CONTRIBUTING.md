@@ -1,3 +1,5 @@
+# Contributing Documentation
+
 Style
 - Our team uses the default styling for our languages.
 - We use tools like Prettier and ESLint to check our coding style before pushing a change.

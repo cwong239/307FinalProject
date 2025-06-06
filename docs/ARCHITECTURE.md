@@ -1,3 +1,5 @@
+# Architecture Documentation
+
 API Docs in backend/app
 
 ## Stack
