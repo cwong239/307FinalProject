@@ -108,7 +108,7 @@ function EditPage() {
         case 201: {
           const data = await response.json();
           setProcessedImage(data.filename);
-          
+
           try {
             const response = await fetch(
               `${azure_api}/image/${data.filename}`,
@@ -134,7 +134,9 @@ function EditPage() {
                 window.location.href = "/login";
                 return;
               case 403:
-                setErrorStatusMessage(`Access denied to image.`);
+                setErrorStatusMessage(
+                  `Access denied to image.`
+                );
                 return;
               case 404:
                 setErrorStatusMessage(`Image not found.`);
