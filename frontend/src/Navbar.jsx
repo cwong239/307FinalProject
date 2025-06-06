@@ -35,6 +35,11 @@ function Navbar() {
     }
   };
 
+  const logoutWrapper = async () => {
+    logout();
+    navigate("/login");
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -97,7 +102,7 @@ function Navbar() {
               Hello, {user.username}
             </span>
             <button
-              onClick={logout}
+              onClick={logoutWrapper}
               className="auth-link"
               style={{
                 background: "none",
@@ -122,24 +127,23 @@ function Navbar() {
           </>
         ) : (
           <>
-            <ul>
-              <Link to="/login" className="auth-link">
-                <li>
-                  <span className="navbar-item">
-                    <span className="material-icons">
-                      login
-                    </span>
-                    Login
-                  </span>{" "}
-                </li>
-              </Link>
+          <ul>
+            <Link to="/login" className="auth-link">
+             <li>
+              <span className="navbar-item">
+                <span className="material-icons">login</span>
+                Login
+              </span> </li>
+            </Link>
 
-              <Link to="/signup" className="auth-link">
-                <li>
-                  <span className="navbar-item">Sign Up</span>
-                </li>
-              </Link>
-            </ul>
+
+            <Link to="/signup" className="auth-link">
+            <li>
+              <span className="navbar-item">
+                Sign Up
+              </span></li>
+            </Link>
+          </ul>
           </>
         )}
       </div>
