@@ -110,9 +110,10 @@ function EditPage() {
           setProcessedImage(data.filename);
 
           try {
-            const response = await fetch(
-              `${azure_api}/image/${data.filename}`,
-              {
+            const response = await fetch(`http://localhost:5000/image/${data.filename}`, {
+            // const response = await fetch(
+            //   `${azure_api}/image/${data.filename}`,
+            //   {
                 method: "GET",
                 headers: {
                   Authorization: `Bearer ${storedToken}`

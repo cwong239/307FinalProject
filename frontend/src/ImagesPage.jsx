@@ -139,9 +139,10 @@ function ImagesPage() {
   const deleteImage = useCallback(
     async (filename) => {
       try {
-        const response = await fetch(
-          `${azure_api}/image/${filename}`,
-          {
+        const response = await fetch(`http://localhost:5000/image/${filename}`, {
+        // const response = await fetch(
+        //   `${azure_api}/image/${filename}`,
+        //   {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${storedToken}`
