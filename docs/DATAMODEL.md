@@ -1,4 +1,4 @@
-# Class (Data Model) UML Diagrams
+# 📊 Class (Data Model) UML Diagrams
 
 This is the diagram of how the core data models in the application are structured and relate to each other. It visually represents the attributes and relationships (associations) between entities like User, Image, and Azure Reference. 
 

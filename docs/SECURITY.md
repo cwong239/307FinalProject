@@ -1,4 +1,4 @@
-# Security Documentation
+# 🔒 Security Documentation
 
 When developing Fotomagic, the development team took security for both our users and systems seriously by implementing a range of best practices.
 

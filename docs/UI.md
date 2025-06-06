@@ -1,4 +1,4 @@
-# UI Prototype
+# 📐 UI Prototype
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/22865ecd-8a4b-4ddc-9760-da6b557ff058" alt="Figma-logo" width="150"/>

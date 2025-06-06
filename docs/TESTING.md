@@ -1,4 +1,4 @@
-# Testing Documentation
+# 🧪 Testing Documentation
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/148381ea-fadc-44b2-8f76-284c6ae77165" alt="1_pU_h27oaQTXPjLxAhMMG0A" width="200"/>

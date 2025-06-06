@@ -1,4 +1,4 @@
-# Contributing Documentation
+# 📋 Contributing Documentation
 
 ## 🔧 Version Control
 
@@ -21,12 +21,12 @@
 
 ## 📦 Libraries & Dependencies
 
-### Frontend
+### 🖥️ Frontend
 - [React.js](https://reactjs.org/) – JavaScript library for building user interfaces.
 - [Prettier](https://prettier.io/) – Code formatter.
 - [ESLint](https://eslint.org/) – Linting utility for JavaScript and JSX.
 
-### Backend
+### ⚙️ Backend
 - Python (see `requirements.txt` for full list)
   - Flask – Web framework for the backend API.
   - Flask-JWT-Extended – For JWT-based authentication.
@@ -34,6 +34,6 @@
   - pymongo – For connecting to MongoDB.
   - python-dotenv – For environment variable management.
 
-> 📄 Full list of Python dependencies can be found in [`requirements.txt`](../backend/requirements.txt)
+The full list of Python dependencies can be found in [`requirements.txt`](../backend/requirements.txt)
 
 **© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**
