@@ -180,18 +180,17 @@ function EditPage() {
     }
 
     try {
-      try {
-        if (imageSrc.startsWith("blob:")) {
-          const link = document.createElement("a");
-          link.href = imageSrc;
-          link.download = processedImage;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          return;
-        } else {
-          setErrorStatusMessage("Failed to download image.");
-        }
+      if (imageSrc.startsWith("blob:")) {
+        const link = document.createElement("a");
+        link.href = imageSrc;
+        link.download = processedImage;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      } else {
+        setErrorStatusMessage("Failed to download image.");
+      }
     } catch (error) {
       console.error(error);
       alert("Download failed.");
