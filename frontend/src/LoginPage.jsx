@@ -22,23 +22,33 @@ function LoginPage() {
         password
       });
 
-      if (response.data.token) {
+      const { token } = response.data;
+
+      if (token) {
         const user = { username };
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        // Pass token to login so axios headers are updated
-        login(user, response.data.token);
-
-        // Redirect after login
+        login(user, token);
         navigate("/");
       } else {
-        console.warn("Login succeeded but no token returned.");
-        setError("Login failed: no token received.");
+        setError("An unexpected error occurred");
       }
     } catch (err) {
-      console.error("Login error:", err);
-      setError("Invalid username or password");
+      if (err.response) {
+        if (err.response.status === 400) {
+          setError(
+            "Username and password must be at least 4 characters"
+          );
+        } else if (err.response.status === 401) {
+          setError("Invalid password");
+        } else {
+          setError("Login failed: " + err.response.statusText);
+        }
+      } else {
+        console.error("Login error:", err);
+        setError("Unable to connect to the server");
+      }
     }
   };
 

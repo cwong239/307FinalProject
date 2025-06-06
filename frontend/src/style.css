@@ -1,3 +1,9 @@
+.root,
+body {
+  margin: 0;
+  width: 100%;
+}
+
 /* Navbar */
 .navbar {
   background: linear-gradient(90deg, #9013fe, #6a10f3);
@@ -25,10 +31,15 @@
 
 .navbar-left ul {
   list-style: none;
+  list-style-type: none;
   display: flex;
   gap: 2rem;
   margin: 0;
   padding: 0;
+}
+
+ul li::marker {
+  content: none;
 }
 
 .navbar-left a {
@@ -36,6 +47,15 @@
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 500;
+}
+
+.navbar-right ul {
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-right .auth-link {
@@ -50,6 +70,10 @@
   align-items: center;
   gap: 6px;
   font-size: 20px;
+}
+
+.navbar-item:hover {
+  cursor: pointer;
 }
 
 .material-icons {

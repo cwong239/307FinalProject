@@ -108,6 +108,50 @@ function EditPage() {
         case 201: {
           const data = await response.json();
           setProcessedImage(data.filename);
+          
+          try {
+            const response = await fetch(
+              `${azure_api}/image/${data.filename}`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${storedToken}`
+                }
+              }
+            );
+
+            switch (response.status) {
+              case 200: {
+                const blob = await response.blob();
+                const processedURL = URL.createObjectURL(blob);
+                if (imageSrc?.startsWith("blob:")) {
+                  URL.revokeObjectURL(imageSrc);
+                }
+                setImageSrc(processedURL);
+                return;
+              }
+              case 401:
+                window.location.href = "/login";
+                return;
+              case 403:
+                setErrorStatusMessage(`Access denied to image.`);
+                return;
+              case 404:
+                setErrorStatusMessage(`Image not found.`);
+                return;
+              case 400:
+                setErrorStatusMessage("Bad request.");
+                return;
+              default:
+                setErrorStatusMessage(
+                  "Server error occurred while downloading image."
+                );
+                return;
+            }
+          } catch (error) {
+            console.error(error);
+            alert("Download processed image failed.");
+          }
           return;
         }
         case 400:
@@ -130,53 +174,22 @@ function EditPage() {
   };
 
   const handleDownload = async () => {
-    if (!processedImage) {
+    if (!processedImage || !imageSrc) {
       alert("Please submit an image for processing first.");
       return;
     }
 
     try {
-      //const response = await fetch(`http://localhost:5000/image/${processedImage}`, {
-      const response = await fetch(
-        `${azure_api}/image/${processedImage}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${storedToken}`
-          }
-        }
-      );
-
-      switch (response.status) {
-        case 200: {
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const temp = document.createElement("a");
-          temp.href = url;
-          temp.download = processedImage;
-          document.body.appendChild(temp);
-          temp.click();
-          temp.remove();
-          window.URL.revokeObjectURL(url);
-          return;
-        }
-        case 401:
-          window.location.href = "/login";
-          return;
-        case 403:
-          setErrorStatusMessage(`Access denied to image.`);
-          return;
-        case 404:
-          setErrorStatusMessage(`Image not found.`);
-          return;
-        case 400:
-          setErrorStatusMessage("Bad request.");
-          return;
-        default:
-          setErrorStatusMessage(
-            "Server error occurred while downloading image."
-          );
-          return;
+      if (imageSrc.startsWith("blob:")) {
+        const link = document.createElement("a");
+        link.href = imageSrc;
+        link.download = processedImage;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      } else {
+        setErrorStatusMessage("Failed to download image.");
       }
     } catch (error) {
       console.error(error);
@@ -284,12 +297,14 @@ function EditPage() {
             value={removeBg}
             onToggle={setRemoveBg}
           />
-          <button
-            data-cy="submit"
-            className="submit-button"
-            onClick={handleSubmit}>
-            Submit
-          </button>
+          {!(imageFile && processedImage) && (
+            <button
+              data-cy="submit"
+              className="submit-button"
+              onClick={handleSubmit}>
+              Submit
+            </button>
+          )}
           {imageFile && processedImage && (
             <button
               data-cy="download"
