@@ -1,5 +1,7 @@
 # UML Sequence Diagram for Authentication and Access Control 
 
+As mentioned in the [security documentation](/docs/SECURITY.md), at Fotomagic the development team took security seriously and below is the relevant UML sequence diagrams for access control operations in the application. 
+
 **Note any block in the Database column if not explicitly mentioned as using Azure or Mongo DB, it is assumed to be Mongo DB**
 
 ## Register Diagram

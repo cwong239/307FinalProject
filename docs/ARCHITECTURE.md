@@ -1,28 +1,30 @@
 # Architecture Documentation
 
-The REST API Documentation can be found here: [backend/app](../backend/app/API-Docs.md)
+## 📚 API Documentation
 
-## Stack
-UI/UX - React w HTML/CSS
+Full REST API documentation is available [here](../backend/app/API-Docs.md).
 
-Client - React
+## 🧱 Tech Stack
 
-Backend API - Python3 Flask
+### Frontend
+- **UI/UX**: React, HTML, CSS
+- **Client Logic**: React
 
-Image Processing - OpenCV
+### Backend
+- **API**: Python 3 with Flask
+- **Image Processing**: OpenCV
+- **Database**: MongoDB
+- **File Storage**: Azure Blob Storage
 
-Database - Mongo
+## 🔗 Relationships
 
-File Storage - Azure
+### General requests
+UI/UX ⇄ Client ⇄ Backend API
 
-## Relationships
-#### General requests
-UI/UX <-> Client  < - - - - - > Backend API
+### Upload image
+Client → Backend API → Image Processing → [Azure Blob Storage, MongoDB]
 
-#### Upload image
-API -> Image Processing -> Azure, Mongo
-
-#### Get image
-API <-> Mongo <-> Azure
+### Get image
+Client → Backend API ⇄ MongoDB ⇄ Azure Blob Storage
 
 **© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**

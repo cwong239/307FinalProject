@@ -1,19 +1,39 @@
 # Contributing Documentation
 
-Style
-- Our team uses the default styling for our languages.
-- We use tools like Prettier and ESLint to check our coding style before pushing a change.
-    - You can use npm run format inside the frontend to run Prettier
-    - To run lint, you can use npm run lint inside the frontend
+## 🔧 Version Control
 
-Tools
-- Our team uses git to manage our project.
-    - In git we have 3 main branches: main, dev, and frontend.
-    - main is our production branch and requires coding reviews before code changes are made to it.
-    - dev is our backend branch and they also use code reviews before pushing into dev.
-    - frontend is our frontend branch and we use a rebasing strategy for this.
-- Style tools mentioned earlier
+- We use **Git** to manage our project and follow a structured branching strategy:
+  - **`main`** – Production branch; all changes require code review before merging.
+  - **`dev`** – Backend development branch; changes are also reviewed before merging.
+  - **`frontend`** – Frontend development branch; uses a **rebasing strategy**.
 
-Libraries 
-- Reactjs (frontend)
-- look at requirements.txt (backend)
+## 🎨 Code Style
+
+- We follow the default styling conventions of our chosen languages.
+- **Prettier** and **ESLint** are used in the frontend to enforce consistent code formatting.
+
+### ▶️ Running Style Checks (Frontend)
+
+- Format code with Prettier:
+  ```npm run format```
+- Format code with Lint:
+  ```npm run lint```
+
+## 📦 Libraries & Dependencies
+
+### Frontend
+- [React.js](https://reactjs.org/) – JavaScript library for building user interfaces.
+- [Prettier](https://prettier.io/) – Code formatter.
+- [ESLint](https://eslint.org/) – Linting utility for JavaScript and JSX.
+
+### Backend
+- Python (see `requirements.txt` for full list)
+  - Flask – Web framework for the backend API.
+  - Flask-JWT-Extended – For JWT-based authentication.
+  - Flask-CORS – For handling cross-origin requests.
+  - pymongo – For connecting to MongoDB.
+  - python-dotenv – For environment variable management.
+
+> 📄 Full list of Python dependencies can be found in [`requirements.txt`](../backend/requirements.txt)
+
+**© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**
