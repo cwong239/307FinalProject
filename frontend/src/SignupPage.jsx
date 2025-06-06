@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
+import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -11,6 +12,7 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
