@@ -111,7 +111,7 @@ function EditPage() {
           
           try {
             const response = await fetch(
-              `${azure_api}/image/${processedImage}`,
+              `${azure_api}/image/${data.filename}`,
               {
                 method: "GET",
                 headers: {
