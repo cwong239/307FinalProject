@@ -37,7 +37,9 @@ function LoginPage() {
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
-          setError("Username and password must be at least 4 characters");
+          setError(
+            "Username and password must be at least 4 characters"
+          );
         } else if (err.response.status === 401) {
           setError("Invalid password");
         } else {
@@ -49,7 +51,6 @@ function LoginPage() {
       }
     }
   };
-
 
   return (
     <>

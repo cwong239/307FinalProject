@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import api from "./api";
+import useAuth from "./hooks/useAuth";
 import MagneticButton from "./components/MagneticButton";
 import "./style.css";
 
@@ -11,6 +12,7 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -35,7 +37,9 @@ function SignupPage() {
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
-          setError("Username and password must be at least 4 characters");
+          setError(
+            "Username and password must be at least 4 characters"
+          );
         } else if (err.response.status === 409) {
           setError("This username is already taken");
         } else {
@@ -47,7 +51,6 @@ function SignupPage() {
       }
     }
   };
-
 
   return (
     <>
