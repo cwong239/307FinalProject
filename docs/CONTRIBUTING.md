@@ -25,6 +25,12 @@
 - [React.js](https://reactjs.org/) – JavaScript library for building user interfaces.
 - [Prettier](https://prettier.io/) – Code formatter.
 - [ESLint](https://eslint.org/) – Linting utility for JavaScript and JSX.
+- [React Router DOM](https://reactrouter.com/) – Client-side routing for React applications.
+- [Axios](https://axios-http.com/) – Promise-based HTTP client for making API requests.
+- [Framer Motion](https://www.framer.com/motion/) – Animation library for React components.
+- [React Intersection Observer](https://www.npmjs.com/package/react-intersection-observer) – React hook for observing when elements enter the viewport.
+- [Vite](https://vitejs.dev/) – Fast frontend build tool and development server.
+- [Cypress](https://www.cypress.io/) – End-to-end testing framework for web applications.
 
 ### ⚙️ Backend
 - Python (see `requirements.txt` for full list)
