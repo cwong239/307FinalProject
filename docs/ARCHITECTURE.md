@@ -59,11 +59,11 @@ Client → Backend API → Image Processing → [Azure Blob Storage, MongoDB]
 ### ⬇️ Get image
 Client → Backend API ⇄ MongoDB ⇄ Azure Blob Storage
 
-### 📐 MVC Model Diagram
+## 📐 MVC Model Diagram
 This project follows the **MVC (Model-View-Controller)** design pattern to separate concerns:
 ![Screenshot 2025-06-06 205222](https://github.com/user-attachments/assets/ef161b0a-5603-4788-86e2-c93cd4aac21c)
 
-### 📐 UML Class Diagram 
+## 📐 UML Class Diagram 
 The UML class diagram for this project can be found [here](/docs/DATAMODEL.md)
 
 **© 2025 [FotoMagic](https://ambitious-dune-0f7fde21e.6.azurestaticapps.net/). All rights reserved.**
