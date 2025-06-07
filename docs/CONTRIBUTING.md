@@ -3,8 +3,8 @@
 ## 🔧 Version Control
 
 - We use **Git** to manage our project and follow a structured branching strategy:
-  - **`main`** – Production branch; all changes require code review before merging.
-  - **`dev`** – Backend development branch; changes are also reviewed before merging.
+  - **`main`** – Production branch; all changes require code review before merging. Only complete and functional versions of dev, or emergency production fixes, are pushed to main.
+  - **`dev`** – Development branch; changes are reviewed before merging. All commits are pulled from other branches, like *frontend* or a specific feature branch.
   - **`frontend`** – Frontend development branch; uses a **rebasing strategy**.
 
 ## 🎨 Code Style
@@ -39,6 +39,7 @@
   - Flask-CORS – For handling cross-origin requests.
   - pymongo – For connecting to MongoDB.
   - python-dotenv – For environment variable management.
+  - OpenCV - Image Processing Library
 
 The full list of Python dependencies can be found in [`requirements.txt`](../backend/requirements.txt)
 
