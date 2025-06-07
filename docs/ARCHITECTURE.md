@@ -16,6 +16,38 @@ Full REST API documentation is available [here](../backend/app/API-Docs.md).
 - **🗄️ Database**: MongoDB
 - **☁️ File Storage**: Azure Blob Storage
 
+## 🚀 Frontend Frameworks & Libraries
+
+This project uses a modern React-based frontend powered by Vite, with support for routing, animations, HTTP requests, and automated tooling for development and testing.
+
+### ⚛️ Core Framework
+- **React** – UI library for building interactive interfaces (`react`, `react-dom`)
+
+### 🧭 Routing
+- **react-router-dom** – Client-side routing for seamless single-page navigation
+
+### 🌐 HTTP Requests
+- **axios** – Simplified HTTP client for communicating with backend APIs
+
+### 🧩 Animations
+- **framer-motion** – Powerful library for animations and transitions in React
+
+### 👀 Utility
+- **react-intersection-observer** – Hook for detecting when components enter the viewport (e.g., for scroll animations)
+
+## 🛠️ Development Tools
+
+### ⚡ Build Tool
+- **Vite** – Lightning-fast development server and build tool
+
+### 🧹 Code Quality
+- **Prettier** – Automatic code formatter for consistent styling
+- **ESLint** – Linter for detecting code issues and enforcing best practices
+  - Plugins: `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-cypress`
+
+### ✅ Testing
+- **Cypress** – End-to-end testing framework for verifying UI functionality
+
 ## 🔗 Relationships
 
 ### 🔁 General requests
