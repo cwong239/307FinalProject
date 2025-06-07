@@ -31,6 +31,9 @@ Due to Azure preventing everyone besides the Github repo owner to create a web a
 ## 🎥 Video Demos:
 [Video Demos for this project](docs/DEMOS.md)
 
+## 🔒 Security:
+[Security for this project](docs/SECURITY.md)
+
 ## 🔄 UML Sequence Diagrams:
 [Sequence Diagrams for this project](docs/SEQUENCE.md)
 
