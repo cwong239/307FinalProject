@@ -15,7 +15,6 @@ def create_app():
     app.config.from_object(Config)
 
     cors.init_app(app)
-    #CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
     CORS(app, resources={r"/*": {"origins": "https://ambitious-dune-0f7fde21e.6.azurestaticapps.net"}}, supports_credentials=True)
     try:
         mongo.init_app(app)

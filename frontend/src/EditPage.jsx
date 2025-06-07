@@ -95,7 +95,6 @@ function EditPage() {
     formData.append("remove_bg", removeBg);
 
     try {
-      //const response = await fetch("http://localhost:5000/image", {
       const response = await fetch(`${azure_api}/image`, {
         method: "POST",
         body: formData,

@@ -1,4 +1,3 @@
-// src/components/AnimatedPage.jsx
 import { motion } from "framer-motion";
 export default function AnimatedPage({ children }) {
   return (

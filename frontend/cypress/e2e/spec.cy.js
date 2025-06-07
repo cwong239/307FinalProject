@@ -23,20 +23,6 @@ describe("The Home Page", () => {
   });
 });
 
-// describe("The Sign up Page", () => {
-//   it("Try to sign up a new user", () => {
-//     const testdata = {
-//       name: "john",
-//       password: "john"
-//     };
-//     cy.visit(`${APP_DOMAIN}/signup`);
-//     cy.get('input[data-cy="username"]').type(testdata.name);
-//     cy.get('input[data-cy="password"]').type(testdata.password);
-//     cy.get('[data-cy="signup-button"]').click();
-//     cy.url().should('eq', `${APP_DOMAIN}/signup`);
-//   });
-// })
-
 describe("The Login and Edit Page", () => {
   it("Try to login as user and upload test image", () => {
     const testdata = {
