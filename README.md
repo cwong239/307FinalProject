@@ -10,6 +10,8 @@ The deployed website can be found through this link: **[FotoMagic](https://ambit
 
 **Note:** Due to Azure preventing everyone besides the Github repo owner to create a web app, a public fork was utilized for continuous integration (CI) and continuous deployment (CD). This fork is always up to date with the main branch of this repo and can be found through this link: **[Deployment Github](https://github.com/minpark830/csc-307-min-CD)**
 
+**Note:** Although all the pages already display all the diagrams themselves, if the source files for these diagrams are desired, they can be found [here](/diagrams/).
+
 ## 🎯 Project Vision:
 [Project vision for this project](docs/PROJECTVISION.md)
 
