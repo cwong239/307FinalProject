@@ -23,7 +23,19 @@ describe("The Home Page", () => {
   });
 });
 
-describe("The Login and Edit Page", () => {
+describe("The About Page", () => {
+  it("successfully loads", () => {
+    cy.visit(`${APP_DOMAIN}/about`);
+  });
+});
+
+describe("The Signup Page", () => {
+  it("successfully loads", () => {
+    cy.visit(`${APP_DOMAIN}/signup`);
+  });
+});
+
+describe("The Login, Edit, and Images Page", () => {
   it("Try to login as user and upload test image", () => {
     const testdata = {
       name: "john",
@@ -84,5 +96,7 @@ describe("The Login and Edit Page", () => {
     cy.get('[data-cy="download"]', { timeout: 10000 })
       .should("be.visible")
       .and("not.be.disabled");
+
+    cy.visit(`${APP_DOMAIN}/images`);
   });
 });
