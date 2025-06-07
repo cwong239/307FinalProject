@@ -57,7 +57,7 @@ UI/UX ⇄ Client ⇄ Backend API
 Client → Backend API → Image Processing → [Azure Blob Storage, MongoDB]
 
 ### ⬇️ Get image
-Client → Backend API ⇄ MongoDB ⇄ Azure Blob Storage
+Client → Backend API ⇄ [Mongo DB, Azure Blob Storage]
 
 ## 📐 MVC Model Diagram
 This project follows the **MVC (Model-View-Controller)** design pattern to separate concerns:
